@@ -247,12 +247,20 @@ function updateCartModal() {
             <img src="${item.img}" alt="${item.name}">
             <div class="item-info">
                 <h4>${item.name}</h4>
-                <p>Qtd: ${item.quantity}</p>
+                <div class="quantidade-controls">
+    <button class="quantidade-btn" onclick="decrementItem('${item.id}')">−</button>
+    <span>${item.quantity}</span>
+    <button class="quantidade-btn" onclick="incrementItem('${item.id}')">+</button>
+</div>
+
                 <p>${item.ml}</p>
                 <p>Preço: R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</p>
 
             </div>
-            <button class="remove-item-btn" data-id="${item.id}">Remover</button>
+           <button onclick="removeFromCart('${item.id}')" class="remove-btn">
+    🗑️
+</button>
+
         `;
         cartItemsContainer.appendChild(itemElement);
         subtotal += item.price * item.quantity;
@@ -321,9 +329,10 @@ checkoutBtn.addEventListener('click', () => {
         return;
     }
 
-    const cartItems = cart.map(item => {
-        return `${item.name} (${item.quantity}x) - R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}`;
-    }).join('\n');
+    const cartItems = cart.map(item =>
+    `- ${item.name} (${item.ml}) x${item.quantity} = R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}`
+).join('\n');
+
 
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2).replace('.', ',');
     const total = subtotal; // Considerando frete 0 por enquanto
@@ -386,5 +395,41 @@ document.addEventListener('DOMContentLoaded', async () => {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
         },
+
     });
 });
+function incrementItem(id) {
+    const item = cart.find(p => p.id === id);
+    if (item) {
+        item.quantity += 1;
+        saveCart();
+        updateCartModal();
+        updateCartCount();
+    }
+}
+
+function decrementItem(id) {
+    const item = cart.find(p => p.id === id);
+    if (item) {
+        if (item.quantity > 1) {
+            item.quantity -= 1;
+        } else {
+            // Remove se estiver com 1 unidade e clicar em "-"
+            cart = cart.filter(p => p.id !== id);
+            Toastify({
+                text: "Produto removido do carrinho.",
+                duration: 1000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                },
+            }).showToast();
+        }
+        saveCart();
+        updateCartModal();
+        updateCartCount();
+    }
+}
