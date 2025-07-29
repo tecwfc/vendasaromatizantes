@@ -1,3 +1,4 @@
+
 /* Estilos gerais */
 * {
     margin: 0;
@@ -358,132 +359,6 @@ footer {
     font-size: 0.9rem;
 }
 
-/* Modal Carrinho */
-.cart-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none; /* Controlado via JS para 'flex' */
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-}
-
-.cart-content {
-    background-color: white;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 600px;
-    max-height: 90vh;
-    overflow-y: auto;
-    padding: 2rem;
-    position: relative;
-}
-
-.cart-content h2 {
-    margin-bottom: 1.5rem;
-    color: #4a4a4a;
-}
-
-.cart-items {
-    margin-bottom: 1.5rem;
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.cart-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 0;
-    border-bottom: 1px solid #eee;
-}
-
-.cart-item:last-child {
-    border-bottom: none;
-}
-
-/* Ajustes para o .cart-item-info e seus filhos, conforme seu HTML/JS */
-.item-info { /* Corrigido de .cart-item-info, baseado no HTML */
-    display: flex;
-    flex-direction: column; /* Para empilhar nome, qtd, preço */
-    gap: 0.2rem;
-    flex-grow: 1; /* Para ocupar o espaço disponível */
-}
-
-.cart-item img { /* Corrigido de .cart-item-img */
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 5px;
-    margin-right: 1rem; /* Espaçamento entre imagem e info */
-}
-
-
-.cart-summary {
-    background-color: #f9f9f9;
-    padding: 1.5rem;
-    border-radius: 5px;
-    margin-bottom: 1.5rem;
-}
-
-.cart-summary h3 {
-    margin-bottom: 1rem;
-    color: #4a4a4a;
-}
-
-.cart-summary p {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-}
-
-.total {
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid #ddd;
-}
-
-.address-input {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 0.5rem;
-}
-
-.address-warn {
-    color: #ff4444;
-    font-size: 0.8rem;
-    display: none;
-}
-
-.cart-actions {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-}
-
-.btn-close {
-    background-color: #ddd;
-    color: #333;
-}
-
-.btn-close:hover {
-    background-color: #ccc;
-}
-
-.carrinho-vazio {
-    text-align: center;
-    color: #666;
-    padding: 2rem 0;
-}
-
 /* Toastify personalização */
 .toastify {
     font-family: 'Poppins', sans-serif;
@@ -542,6 +417,301 @@ footer {
 
     .banner-slider .swiper-button-prev,
     .banner-slider .swiper-button-next {
-        display: none; /* Esconde botões de navegação em telas muito pequenas */
+        display: none;
+    }
+
+    .indisponivel-msg {
+        color: red;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body {
+    background-color: #f4f4f7;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header */
+header {
+    background-color: #ffffff;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo img {
+    height: 50px;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #6d28d9;
+}
+
+#cart-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#cart-count {
+    background-color: #6d28d9;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+/* Modal Carrinho */
+.cart-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.cart-content {
+    background-color: #ffffff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 2rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+.cart-content h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.cart-items {
+    margin-bottom: 1.5rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.cart-item {
+    background-color: #f8f8fa;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cart-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.item-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.cart-summary {
+    background-color: #f0f0f4;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.cart-summary h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.cart-summary p {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    color: #444;
+}
+
+.total {
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-top: 1px solid #ccc;
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+    color: #222;
+}
+
+.address-input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+.address-warn {
+    color: #e63946;
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    display: none;
+}
+
+.cart-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn-close {
+    background-color: #ddd;
+    color: #333;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-close:hover {
+    background-color: #ccc;
+}
+
+#checkout-btn {
+    flex: 1;
+    background: linear-gradient(90deg, #4caf50, #81c784);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#checkout-btn:hover {
+    background: linear-gradient(90deg, #43a047, #66bb6a);
+}
+
+.quantidade-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #e0e0e0;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+.quantidade-btn {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 4px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.quantidade-btn:hover {
+    background-color: #f0f0f0;
+    border-color: #999;
+}
+
+.carrinho-vazio {
+    text-align: center;
+    color: #666;
+    padding: 2rem 0;
+    font-size: 1rem;
+}
+
+/* Toastify */
+.toastify {
+    font-family: 'Poppins', sans-serif;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .cart-content {
+        padding: 1rem;
+    }
+
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cart-actions {
+        flex-direction: column;
     }
 }
