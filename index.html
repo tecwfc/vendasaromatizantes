@@ -8,7 +8,7 @@
 
   <!-- 🚧 VERIFICAÇÃO DE MANUTENÇÃO -->
   <script>
-    (function() {
+    (function () {
       var params = new URLSearchParams(window.location.search);
       if (params.get('admin') === 'wr2026') {
         sessionStorage.setItem('admin_bypass', 'true');
@@ -17,7 +17,7 @@
       if (sessionStorage.getItem('admin_bypass') === 'true') return;
 
       var callback = 'manut_check_' + Date.now();
-      window[callback] = function(data) {
+      window[callback] = function (data) {
         delete window[callback];
         if (data && data.success && data.data?.emManutencao) {
           window.location.replace('manutencao.html');
@@ -42,7 +42,8 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
 
@@ -55,19 +56,24 @@
 
 <body class="bg-bgSoft text-textDark">
   <!-- HEADER FIXO -->
-  <header class="glass fixed top-0 w-full z-[100] px-4 md:px-6 border-b border-primary/10 flex items-center justify-between gap-4 md:gap-6">
+  <header
+    class="glass fixed top-0 w-full z-[100] px-4 md:px-6 border-b border-primary/10 flex items-center justify-between gap-4 md:gap-6">
 
     <div class="flex items-center gap-3 group cursor-pointer shrink-0"
       onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
       <div class="relative">
-        <div class="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-full blur opacity-20 group-hover:opacity-60 transition duration-1000"></div>
-        <div class="relative h-12 w-12 md:h-14 lg:h-16 md:w-14 lg:w-16 rounded-full border-2 border-white shadow-soft bg-white flex items-center justify-center overflow-hidden">
+        <div
+          class="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-full blur opacity-20 group-hover:opacity-60 transition duration-1000">
+        </div>
+        <div
+          class="relative h-12 w-12 md:h-14 lg:h-16 md:w-14 lg:w-16 rounded-full border-2 border-white shadow-soft bg-white flex items-center justify-center overflow-hidden">
           <img src="assets/Logo.png" alt="WR Aromatizantes" class="w-full h-full object-cover rounded-full" />
         </div>
       </div>
       <div class="flex flex-col leading-tight hidden sm:flex">
         <h1 class="font-black text-2xl md:text-3xl lg:text-4xl text-primary tracking-tighter">WR</h1>
-        <span class="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-accent opacity-90">Aromatizantes</span>
+        <span
+          class="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-accent opacity-90">Aromatizantes</span>
       </div>
     </div>
 
@@ -96,7 +102,8 @@
     </div>
 
     <div class="flex items-center gap-1 md:gap-3 shrink-0">
-      <button id="mobile-search-btn" class="md:hidden text-primary bg-primary/5 p-3 rounded-xl active:scale-95 transition-all">
+      <button id="mobile-search-btn"
+        class="md:hidden text-primary bg-primary/5 p-3 rounded-xl active:scale-95 transition-all">
         <i class="fas fa-search text-xl"></i>
       </button>
 
@@ -107,7 +114,8 @@
           class="absolute -top-1 -right-1 bg-white text-primary text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-primary">0</span>
       </button>
 
-      <button id="mobile-menu-btn" class="md:hidden text-primary bg-primary/5 p-3 rounded-xl active:scale-95 transition-all">
+      <button id="mobile-menu-btn"
+        class="md:hidden text-primary bg-primary/5 p-3 rounded-xl active:scale-95 transition-all">
         <i class="fa-solid fa-bars-staggered text-xl"></i>
       </button>
     </div>
@@ -143,7 +151,8 @@
           <span class="text-[10px] text-accent font-bold uppercase tracking-widest">Aromatizantes</span>
         </div>
       </div>
-      <button id="close-mobile-menu" class="h-10 w-10 flex items-center justify-center rounded-full bg-white shadow-sm text-primary">
+      <button id="close-mobile-menu"
+        class="h-10 w-10 flex items-center justify-center rounded-full bg-white shadow-sm text-primary">
         <i class="fa-solid fa-xmark text-xl"></i>
       </button>
     </div>
@@ -161,7 +170,8 @@
 
         <hr class="my-6 border-primary/10" />
 
-        <a href="#sobre-empresa" class="w-full flex items-center gap-3 p-4 text-textMuted font-medium hover:text-primary transition-all duration-300">
+        <a href="#sobre-empresa"
+          class="w-full flex items-center gap-3 p-4 text-textMuted font-medium hover:text-primary transition-all duration-300">
           <i class="fa-solid fa-circle-info"></i> Sobre WR Aromatizantes
         </a>
       </nav>
@@ -202,61 +212,41 @@
           <span class="sidebar-count" id="count-todos">0</span>
         </button>
 
-        <!-- GRUPO: SPRAY 120ML -->
-        <div class="sidebar-group">
-          <button class="sidebar-group-title" onclick="toggleSidebarGroup(this)">
-            <span class="sidebar-group-icon" style="background: linear-gradient(135deg, #ede9fe, #c4b5fd);">
-              <i class="fa-solid fa-spray-can" style="color: #6d28d9;"></i>
-            </span>
-            <span>Spray 120ml</span>
-            <i class="fas fa-chevron-down sidebar-group-arrow"></i>
-          </button>
-          <div class="sidebar-group-content">
-            <button class="sidebar-item-sub" data-categoria="spray 120ml"><span>Todos os Aromas</span></button>
-          </div>
-        </div>
+        <!-- BOTÃO DIRETO: SPRAY 120ML -->
+        <button class="sidebar-item sidebar-item-category" data-categoria="spray 120ml">
+          <span class="sidebar-icon" style="background: linear-gradient(135deg, #ede9fe, #c4b5fd);">
+            <i class="fa-solid fa-spray-can" style="color: #6d28d9;"></i>
+          </span>
+          <span class="sidebar-label">Spray 120ml</span>
+          <span class="sidebar-count" id="count-spray-120ml">0</span>
+        </button>
 
-        <!-- GRUPO: SPRAY 500ML -->
-        <div class="sidebar-group">
-          <button class="sidebar-group-title" onclick="toggleSidebarGroup(this)">
-            <span class="sidebar-group-icon" style="background: linear-gradient(135deg, #fef3c7, #fcd34d);">
-              <i class="fa-solid fa-bottle-water" style="color: #92400e;"></i>
-            </span>
-            <span>Spray 500ml</span>
-            <i class="fas fa-chevron-down sidebar-group-arrow"></i>
-          </button>
-          <div class="sidebar-group-content">
-            <button class="sidebar-item-sub" data-categoria="spray 500ml"><span>Todos os Aromas</span></button>
-          </div>
-        </div>
+        <!-- BOTÃO DIRETO: SPRAY 500ML -->
+        <button class="sidebar-item sidebar-item-category" data-categoria="spray 500ml">
+          <span class="sidebar-icon" style="background: linear-gradient(135deg, #fef3c7, #fcd34d);">
+            <i class="fa-solid fa-bottle-water" style="color: #92400e;"></i>
+          </span>
+          <span class="sidebar-label">Spray 500ml</span>
+          <span class="sidebar-count" id="count-spray-500ml">0</span>
+        </button>
 
-        <!-- GRUPO: REFIL 1L -->
-        <div class="sidebar-group">
-          <button class="sidebar-group-title" onclick="toggleSidebarGroup(this)">
-            <span class="sidebar-group-icon" style="background: linear-gradient(135deg, #dbeafe, #93c5fd);">
-              <i class="fa-solid fa-fill-drip" style="color: #1e40af;"></i>
-            </span>
-            <span>Refil 1 Litro</span>
-            <i class="fas fa-chevron-down sidebar-group-arrow"></i>
-          </button>
-          <div class="sidebar-group-content">
-          <button class="sidebar-item-sub" data-categoria="refil"><span>Todos os Aromas</span></button>
-          </div>
-        </div>
+        <!-- BOTÃO DIRETO: REFIL 1L -->
+        <button class="sidebar-item sidebar-item-category" data-categoria="refil">
+          <span class="sidebar-icon" style="background: linear-gradient(135deg, #dbeafe, #93c5fd);">
+            <i class="fa-solid fa-fill-drip" style="color: #1e40af;"></i>
+          </span>
+          <span class="sidebar-label">Refil 1 Litro</span>
+          <span class="sidebar-count" id="count-refil">0</span>
+        </button>
 
-        <!-- GRUPO: LINHA AUTOMOTIVA -->
-        <div class="sidebar-group">
-          <button class="sidebar-group-title" onclick="toggleSidebarGroup(this)">
-            <span class="sidebar-group-icon" style="background: linear-gradient(135deg, #fce7f3, #f9a8d4);">
-              <i class="fa-solid fa-car-side" style="color: #9d174d;"></i>
-            </span>
-            <span>Linha Automotiva</span>
-            <i class="fas fa-chevron-down sidebar-group-arrow"></i>
-          </button>
-          <div class="sidebar-group-content">
-            <button class="sidebar-item-sub" data-categoria="automotivo"><span>Linha Auto</span></button>
-          </div>
-        </div>
+        <!-- BOTÃO DIRETO: LINHA AUTOMOTIVA -->
+        <button class="sidebar-item sidebar-item-category" data-categoria="automotivo">
+          <span class="sidebar-icon" style="background: linear-gradient(135deg, #fce7f3, #f9a8d4);">
+            <i class="fa-solid fa-car-side" style="color: #9d174d;"></i>
+          </span>
+          <span class="sidebar-label">Linha Automotiva</span>
+          <span class="sidebar-count" id="count-automotivo">0</span>
+        </button>
 
       </div>
     </aside>
@@ -300,78 +290,85 @@
     </main>
   </div>
 
- <!-- MODAL DO CARRINHO -->
-<div id="cart-modal" class="fixed inset-0 bg-accent/60 backdrop-blur-sm hidden items-center justify-center p-2 sm:p-4" style="z-index: 99999">
-  <div class="bg-white w-full max-w-md rounded-[32px] flex flex-col shadow-2xl overflow-hidden animate-scale"
-       style="max-height: 95vh; height: auto;">
-    
-    <!-- HEADER FIXO (não rola) -->
-    <div class="p-4 sm:p-5 pb-3 flex justify-between items-center flex-shrink-0 border-b border-primary/10">
-      <h2 class="text-sm font-black uppercase tracking-widest text-slate-800">
-        <i class="fas fa-shopping-bag text-primary mr-2"></i>Sua Sacola
-      </h2>
-      <div class="flex items-center gap-3">
-        <button id="clear-cart-btn" class="text-[10px] font-bold text-red-400 uppercase hover:text-red-600 transition-colors hidden">
-          <i class="fas fa-trash-alt mr-1"></i>Limpar
-        </button>
-        <button id="close-modal-btn" class="text-slate-400 hover:text-red-500 transition-colors p-1.5 rounded-full hover:bg-red-50">
-          <i class="fa-solid fa-xmark text-xl"></i>
-        </button>
-      </div>
-    </div>
+  <!-- MODAL DO CARRINHO -->
+  <div id="cart-modal" class="fixed inset-0 bg-accent/60 backdrop-blur-sm hidden items-center justify-center p-2 sm:p-4"
+    style="z-index: 99999">
+    <div class="bg-white w-full max-w-md rounded-[32px] flex flex-col shadow-2xl overflow-hidden animate-scale"
+      style="max-height: 95vh; height: auto;">
 
-    <!-- BARRA DE FRETE GRÁTIS (fixa) -->
-    <div class="px-4 sm:px-5 py-3 flex-shrink-0 bg-primary/5">
-      <div id="free-shipping-text" class="text-[10px] font-bold mb-1 text-textMuted uppercase tracking-tight"></div>
-      <div class="w-full bg-primary/10 h-1.5 rounded-full overflow-hidden">
-        <div id="free-shipping-bar" class="bg-primary h-full transition-all duration-500 ease-out" style="width: 0%"></div>
+      <!-- HEADER FIXO (não rola) -->
+      <div class="p-4 sm:p-5 pb-3 flex justify-between items-center flex-shrink-0 border-b border-primary/10">
+        <h2 class="text-sm font-black uppercase tracking-widest text-slate-800">
+          <i class="fas fa-shopping-bag text-primary mr-2"></i>Sua Sacola
+        </h2>
+        <div class="flex items-center gap-3">
+          <button id="clear-cart-btn"
+            class="text-[10px] font-bold text-red-400 uppercase hover:text-red-600 transition-colors hidden">
+            <i class="fas fa-trash-alt mr-1"></i>Limpar
+          </button>
+          <button id="close-modal-btn"
+            class="text-slate-400 hover:text-red-500 transition-colors p-1.5 rounded-full hover:bg-red-50">
+            <i class="fa-solid fa-xmark text-xl"></i>
+          </button>
+        </div>
       </div>
-    </div>
 
-    <!-- LISTA DE PRODUTOS (única parte que rola) -->
-    <div id="cart-items" class="flex-1 overflow-y-auto px-4 sm:px-5 py-3 custom-scrollbar" style="min-height: 100px;"></div>
+      <!-- BARRA DE FRETE GRÁTIS (fixa) -->
+      <div class="px-4 sm:px-5 py-3 flex-shrink-0 bg-primary/5">
+        <div id="free-shipping-text" class="text-[10px] font-bold mb-1 text-textMuted uppercase tracking-tight"></div>
+        <div class="w-full bg-primary/10 h-1.5 rounded-full overflow-hidden">
+          <div id="free-shipping-bar" class="bg-primary h-full transition-all duration-500 ease-out" style="width: 0%">
+          </div>
+        </div>
+      </div>
 
-    <!-- RODAPÉ FIXO (formulário + botões) -->
-    <div class="p-4 sm:p-5 bg-bgSoft border-t border-primary/10 flex-shrink-0">
-      <div class="flex justify-between items-center mb-2">
-        <span class="text-[11px] text-textMuted font-bold uppercase">Subtotal</span>
-        <span id="cart-subtotal" class="text-xs font-bold text-slate-800">R$ 0,00</span>
+      <!-- LISTA DE PRODUTOS (única parte que rola) -->
+      <div id="cart-items" class="flex-1 overflow-y-auto px-4 sm:px-5 py-3 custom-scrollbar" style="min-height: 100px;">
       </div>
-      <div class="flex justify-between items-center mb-2">
-        <span class="text-[11px] text-textMuted font-bold uppercase">Entrega</span>
-        <span id="cart-shipping" class="text-xs font-bold text-green-700">GRÁTIS</span>
-      </div>
-      <div class="flex justify-between items-end mb-3">
-        <span class="text-xs font-black uppercase text-slate-800">Total</span>
-        <span id="cart-total" class="text-xl font-black text-primary leading-none">R$ 0,00</span>
-      </div>
-      
-      <!-- CAMPOS DE NOME E ENDEREÇO -->
-      <div class="space-y-2 mb-3">
-        <input type="text" id="customer-name" placeholder="Seu nome completo *"
-          class="w-full p-3 rounded-2xl border border-primary/15 text-xs focus:ring-2 focus:ring-primary outline-none transition-all" />
-        <input type="text" id="address" placeholder="Endereço Completo (Rua, Nº, Bairro) *"
-          class="w-full p-3 rounded-2xl border border-primary/15 text-xs focus:ring-2 focus:ring-primary outline-none transition-all" />
-      </div>
-      
-      <!-- BOTÕES -->
-      <div class="flex gap-2">
-        <button id="pdf-preview-btn"
-          class="flex-1 bg-white border-2 border-primary text-primary py-3 rounded-2xl font-black text-[10px] uppercase tracking-wider hover:bg-primary/10 transition-all flex items-center justify-center gap-2">
-          <i class="fas fa-file-pdf"></i> PDF
-        </button>
-        <button id="checkout-btn"
-          class="flex-1 bg-primary text-white py-3 rounded-2xl font-black text-[10px] uppercase tracking-wider hover:bg-primaryDark transition-all flex items-center justify-center gap-2">
-          <i class="fab fa-whatsapp"></i> Finalizar
-        </button>
+
+      <!-- RODAPÉ FIXO (formulário + botões) -->
+      <div class="p-4 sm:p-5 bg-bgSoft border-t border-primary/10 flex-shrink-0">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-[11px] text-textMuted font-bold uppercase">Subtotal</span>
+          <span id="cart-subtotal" class="text-xs font-bold text-slate-800">R$ 0,00</span>
+        </div>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-[11px] text-textMuted font-bold uppercase">Entrega</span>
+          <span id="cart-shipping" class="text-xs font-bold text-green-700">GRÁTIS</span>
+        </div>
+        <div class="flex justify-between items-end mb-3">
+          <span class="text-xs font-black uppercase text-slate-800">Total</span>
+          <span id="cart-total" class="text-xl font-black text-primary leading-none">R$ 0,00</span>
+        </div>
+
+        <!-- CAMPOS DE NOME E ENDEREÇO -->
+        <div class="space-y-2 mb-3">
+          <input type="text" id="customer-name" placeholder="Seu nome completo *"
+            class="w-full p-3 rounded-2xl border border-primary/15 text-xs focus:ring-2 focus:ring-primary outline-none transition-all" />
+          <input type="text" id="address" placeholder="Endereço Completo (Rua, Nº, Bairro) *"
+            class="w-full p-3 rounded-2xl border border-primary/15 text-xs focus:ring-2 focus:ring-primary outline-none transition-all" />
+        </div>
+
+        <!-- BOTÕES -->
+        <div class="flex gap-2">
+          <button id="pdf-preview-btn"
+            class="flex-1 bg-white border-2 border-primary text-primary py-3 rounded-2xl font-black text-[10px] uppercase tracking-wider hover:bg-primary/10 transition-all flex items-center justify-center gap-2">
+            <i class="fas fa-file-pdf"></i> PDF
+          </button>
+          <button id="checkout-btn"
+            class="flex-1 bg-primary text-white py-3 rounded-2xl font-black text-[10px] uppercase tracking-wider hover:bg-primaryDark transition-all flex items-center justify-center gap-2">
+            <i class="fab fa-whatsapp"></i> Finalizar
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
   <!-- MODAL PDF -->
-  <div id="pdf-preview-modal" class="fixed inset-0 bg-accent/70 backdrop-blur-sm hidden items-center justify-center p-4" style="z-index: 99999">
-    <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-scale max-h-[90vh] flex flex-col">
+  <div id="pdf-preview-modal" class="fixed inset-0 bg-accent/70 backdrop-blur-sm hidden items-center justify-center p-4"
+    style="z-index: 99999">
+    <div
+      class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-scale max-h-[90vh] flex flex-col">
       <div class="p-4 border-b border-primary/10 flex justify-between items-center bg-primary/10">
         <h3 class="font-black text-sm uppercase tracking-widest text-primary">
           <i class="fas fa-file-pdf mr-2"></i> Visualizar Pedido
@@ -391,19 +388,23 @@
   </div>
 
   <!-- MODAL CONFIRM LIMPAR -->
-  <div id="confirm-clear-modal" class="fixed inset-0 hidden items-center justify-center bg-accent/50" style="z-index: 99999">
+  <div id="confirm-clear-modal" class="fixed inset-0 hidden items-center justify-center bg-accent/50"
+    style="z-index: 99999">
     <div class="bg-white rounded-2xl p-6 w-full max-w-sm">
       <h3 class="font-black text-lg mb-2 text-center">Limpar sacola?</h3>
       <p class="text-sm text-textMuted text-center mb-6">Todos os itens serão removidos da sua sacola.</p>
       <div class="flex gap-3">
-        <button id="cancel-clear-btn" class="flex-1 py-3 rounded-full font-bold text-xs uppercase tracking-widest bg-primary/10 hover:bg-primary/20">Cancelar</button>
-        <button id="confirm-clear-btn" class="flex-1 py-3 rounded-full font-bold text-xs uppercase tracking-widest bg-red-500 text-white hover:bg-red-600">Limpar</button>
+        <button id="cancel-clear-btn"
+          class="flex-1 py-3 rounded-full font-bold text-xs uppercase tracking-widest bg-primary/10 hover:bg-primary/20">Cancelar</button>
+        <button id="confirm-clear-btn"
+          class="flex-1 py-3 rounded-full font-bold text-xs uppercase tracking-widest bg-red-500 text-white hover:bg-red-600">Limpar</button>
       </div>
     </div>
   </div>
 
   <!-- MODAL DE SELEÇÃO -->
-  <div id="size-modal" class="fixed inset-0 bg-accent/60 backdrop-blur-sm hidden items-center justify-center p-4" style="z-index: 99999">
+  <div id="size-modal" class="fixed inset-0 bg-accent/60 backdrop-blur-sm hidden items-center justify-center p-4"
+    style="z-index: 99999">
     <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl animate-scale overflow-hidden flex flex-col">
       <div class="size-modal-header">
         <div class="size-modal-thumb" id="size-product-image-container"></div>
@@ -442,15 +443,34 @@
   </div>
 
   <!-- MODAL ZOOM -->
-  <div id="image-zoom-modal" class="image-zoom-modal">
-    <button class="close-zoom" onclick="fecharZoom()"><i class="fas fa-times"></i></button>
-    <div class="nav-arrows">
-      <button onclick="zoomAnterior()"><i class="fas fa-chevron-left"></i></button>
-      <button onclick="zoomProximo()"><i class="fas fa-chevron-right"></i></button>
-    </div>
-    <img id="zoom-image" src="" alt="Ampliar imagem">
-    <div style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px;" id="zoom-thumbnails"></div>
+<div id="image-zoom-modal" class="image-zoom-modal">
+  <button class="close-zoom" onclick="fecharZoom()"><i class="fas fa-times"></i></button>
+
+  <div class="nav-arrows">
+    <button onclick="zoomAnterior()"><i class="fas fa-chevron-left"></i></button>
+    <button onclick="zoomProximo()"><i class="fas fa-chevron-right"></i></button>
   </div>
+
+  <img id="zoom-image" src="" alt="Ampliar imagem">
+
+  <!-- Indicador de zoom -->
+  <div class="zoom-indicator" id="zoom-indicator">🔍 Arraste para explorar</div>
+
+  <!-- Botões de zoom -->
+  <div class="zoom-controls">
+    <button onclick="aplicarZoom(-0.5)" title="Diminuir zoom">
+      <i class="fas fa-search-minus"></i>
+    </button>
+    <button onclick="resetZoom()" title="Resetar zoom">
+      <i class="fas fa-compress"></i>
+    </button>
+    <button onclick="aplicarZoom(0.5)" title="Aumentar zoom">
+      <i class="fas fa-search-plus"></i>
+    </button>
+  </div>
+
+  <div style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px;" id="zoom-thumbnails"></div>
+</div>
 
   <!-- BOTÃO WHATSAPP -->
   <a href="https://wa.me/5588999049636" target="_blank"
@@ -462,12 +482,15 @@
   <footer id="sobre-empresa" class="bg-accent text-white pt-20 pb-10 px-6 mt-20 border-t border-white/5">
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
       <div>
-        <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter">WR <span class="text-accent font-light">Aromatizantes</span></h2>
+        <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter">WR <span
+            class="text-accent font-light">Aromatizantes</span></h2>
         <p class="text-slate-300 text-sm leading-relaxed mb-6">
-          A <strong>WR Aromatizantes</strong> nasceu para levar o cheirinho mais querido do Brasil para casas, carros e escritórios.
+          A <strong>WR Aromatizantes</strong> nasceu para levar o cheirinho mais querido do Brasil para casas, carros e
+          escritórios.
         </p>
         <div class="flex gap-4">
-          <a href="https://wa.me/5588999049636" target="_blank" class="w-10 h-10 bg-white/5 flex items-center justify-center rounded-full hover:bg-primary transition">
+          <a href="https://wa.me/5588999049636" target="_blank"
+            class="w-10 h-10 bg-white/5 flex items-center justify-center rounded-full hover:bg-primary transition">
             <i class="fa-brands fa-whatsapp"></i>
           </a>
         </div>
@@ -475,9 +498,11 @@
       <div>
         <h3 class="font-bold mb-6 text-accent uppercase text-sm tracking-widest">Contato</h3>
         <ul class="text-slate-300 text-sm space-y-4">
-          <li class="flex items-center gap-3"><i class="fa-solid fa-location-dot text-accent"></i> Juazeiro do Norte, CE</li>
+          <li class="flex items-center gap-3"><i class="fa-solid fa-location-dot text-accent"></i> Juazeiro do Norte, CE
+          </li>
           <li class="flex items-center gap-3"><i class="fa-solid fa-phone text-accent"></i> (88) 99904-9636</li>
-          <li class="flex items-center gap-3"><i class="fa-solid fa-envelope text-accent"></i> contato@wraromatizantes.com.br</li>
+          <li class="flex items-center gap-3"><i class="fa-solid fa-envelope text-accent"></i>
+            contato@wraromatizantes.com.br</li>
         </ul>
       </div>
       <div>
