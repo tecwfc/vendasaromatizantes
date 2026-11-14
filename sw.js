@@ -1,4 +1,4 @@
-const CACHE_NAME = 'wr-aroma-v1';
+const CACHE_NAME = 'wr-aroma-v2';
 const urlsToCache = [
   '/styles.css',
   '/script.js',
