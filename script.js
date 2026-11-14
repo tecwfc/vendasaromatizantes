@@ -1,6 +1,6 @@
 // ============================================
-// WR AROMATIZANTES - SCRIPT PRINCIPAL v2
-// (SEM: referência, subcategoria, cores, tamanhos, destaque)
+// WR AROMATIZANTES - SCRIPT PRINCIPAL v3
+// (COM FILTRO ACUMULATIVO: Categoria + Subcategoria)
 // ============================================
 
 const ESTOQUE_API_URL = "https://script.google.com/macros/s/AKfycbz54JYWtZOJOVJtPWLxydLrrn6h18NKCdYb90LT_UGHMnzUKc98kVX8QVI-Wvw4rQJj/exec";
@@ -45,6 +45,12 @@ let tempProduct = null;
 let subtotal = 0;
 let imagensZoom = [];
 let zoomIndex = 0;
+
+// ============================================
+// ESTADO DOS FILTROS (ACUMULATIVO)
+// ============================================
+let filtroCategoriaAtivo = 'todos';
+let filtroSubcategoriaAtivo = '';
 
 const ESTOQUE_CACHE = new Map();
 const ESTOQUE_CACHE_TTL = 30 * 1000;
@@ -96,16 +102,13 @@ function normalizarPalavraBusca(palavra) {
 
 function driveImg(url, size = IMG_SIZE_CARD) {
   if (!url || url === 'placeholder.png') return PLACEHOLDER_SVG;
-
   if (url.includes("googleusercontent.com")) {
     return url.replace(/=s\d+.*$/, `=s${size}`).replace(/=w\d+.*$/, `=s${size}`);
   }
-
   const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
   if (match) {
     return `https://lh3.googleusercontent.com/u/0/d/${match[1]}=s${size}`;
   }
-
   if (url.startsWith("http")) return url;
   return PLACEHOLDER_SVG;
 }
@@ -125,7 +128,6 @@ async function carregarTudo() {
       localStorage.removeItem(CACHE_KEY_DADOS);
     }
   }
-
   await atualizarEmBackground(true);
 }
 
@@ -137,7 +139,6 @@ async function atualizarEmBackground(mostrarLoading = false) {
         c.innerHTML = Array(10).fill('<div class="skeleton-card"></div>').join('');
       }
     }
-
     const t0 = performance.now();
     const dados = await new Promise((resolve, reject) => {
       const cb = 'wr_load_' + Date.now();
@@ -163,16 +164,12 @@ async function atualizarEmBackground(mostrarLoading = false) {
       };
       document.body.appendChild(script);
     });
-
     console.log(`✅ Dados em ${Math.round(performance.now() - t0)}ms`);
-
     if (!dados || dados.error) throw new Error(dados?.error || 'Erro desconhecido');
-
     try {
       localStorage.setItem(CACHE_KEY_DADOS, JSON.stringify(dados));
       localStorage.setItem(CACHE_KEY_TIME, String(Date.now()));
     } catch (e) {}
-
     aplicarDados(dados);
   } catch (err) {
     console.error('❌ Erro:', err);
@@ -222,26 +219,12 @@ function aplicarDados(dados) {
 
   setTimeout(atualizarContadoresSidebar, 50);
   setTimeout(atualizarContadorProdutos, 50);
+  setTimeout(renderizarSidebarDinamica, 60);
 }
 
 // ============================================
-// SIDEBAR
+// SIDEBAR MOBILE
 // ============================================
-function toggleSidebarGroup(btn) {
-  const group = btn.closest('.sidebar-group');
-  if (!group) return;
-  group.classList.toggle('open');
-}
-
-function toggleSidebarSubgroup(btn) {
-  const subgroup = btn.closest('.sidebar-subgroup');
-  if (!subgroup) return;
-  subgroup.classList.toggle('open');
-}
-
-window.toggleSidebarGroup = toggleSidebarGroup;
-window.toggleSidebarSubgroup = toggleSidebarSubgroup;
-
 function abrirSidebarMobile() {
   const mobileMenu = document.getElementById('mobile-menu');
   const mobileOverlay = document.getElementById('mobile-overlay');
@@ -252,7 +235,6 @@ function abrirSidebarMobile() {
     document.querySelectorAll('.sidebar-group').forEach(g => g.classList.remove('open'));
     document.querySelectorAll('.sidebar-subgroup').forEach(sg => sg.classList.remove('open'));
   }
-
   const sidebar = document.getElementById('sidebar-categorias');
   const overlay = document.getElementById('sidebar-overlay');
   if (sidebar) sidebar.classList.add('open');
@@ -267,24 +249,34 @@ function fecharSidebarMobile() {
   if (overlay) overlay.classList.remove('active');
   document.body.style.overflow = '';
 }
-
 window.abrirSidebarMobile = abrirSidebarMobile;
 window.fecharSidebarMobile = fecharSidebarMobile;
 
-function marcarItemSidebarAtivo(categoria) {
-  document.querySelectorAll('.sidebar-item, .sidebar-item-sub').forEach(el => {
+// ============================================
+// MARCAR ITEM ATIVO (multi-ativo)
+// ============================================
+function marcarItemSidebarAtivo() {
+  document.querySelectorAll('.sidebar-item, .sidebar-item-category, .sidebar-item-sub').forEach(el => {
     el.classList.remove('sidebar-item-active', 'active');
   });
 
-  if (categoria === 'todos') {
+  if (filtroCategoriaAtivo === 'todos' && !filtroSubcategoriaAtivo) {
     const el = document.querySelector('.sidebar-item[data-categoria="todos"]');
     if (el) el.classList.add('sidebar-item-active');
     return;
   }
 
-  const el = document.querySelector(`.sidebar-item-sub[data-categoria="${categoria}"]`);
-  if (el) el.classList.add('active');
+  if (filtroCategoriaAtivo !== 'todos') {
+    const elCat = document.querySelector(`.sidebar-item-category[data-tipo="categoria"][data-categoria="${filtroCategoriaAtivo}"]`);
+    if (elCat) elCat.classList.add('sidebar-item-active');
+  }
+
+  if (filtroSubcategoriaAtivo) {
+    const elSub = document.querySelector(`.sidebar-item-category[data-tipo="subcategoria"][data-categoria="${filtroSubcategoriaAtivo}"]`);
+    if (elSub) elSub.classList.add('sidebar-item-active');
+  }
 }
+window.marcarItemSidebarAtivo = marcarItemSidebarAtivo;
 
 // ============================================
 // CONTADORES
@@ -299,37 +291,15 @@ function atualizarContadorProdutos() {
 
 function atualizarContadoresSidebar() {
   if (!allProducts || allProducts.length === 0) return;
-
-  // Total geral
   const totalEl = document.getElementById('count-todos');
   if (totalEl) totalEl.textContent = allProducts.length;
-
-  // Contadores individuais (um por categoria direta)
-  const contadores = {
-    'count-spray-120ml': 'spray 120ml',
-    'count-spray-500ml': 'spray 500ml',
-    'count-refil': 'refil',
-    'count-automotivo': 'automotivo'
-  };
-
-  Object.entries(contadores).forEach(([id, categoria]) => {
-    const el = document.getElementById(id);
-    if (el) {
-      const qtd = contarProdutosPorCategoria(categoria);
-      el.textContent = qtd;
-      // Deixa mais claro se tiver produtos
-      el.style.opacity = qtd === 0 ? '0.4' : '1';
-    }
-  });
 }
 
 function contarProdutosPorCategoria(categoria) {
   if (!allProducts || allProducts.length === 0) return 0;
-
   const catFiltro = normalizar(categoria);
   const palavrasFiltro = catFiltro.split(/\s+/).filter((p) => p.length > 0);
   const palavrasFiltroNorm = palavrasFiltro.map(normalizarPalavraBusca);
-
   return allProducts.filter((p) => {
     const catProduto = normalizar(p["Categoria"] || "");
     const nomeProduto = normalizar(p["Nome do Produto"] || "");
@@ -341,19 +311,14 @@ function contarProdutosPorCategoria(categoria) {
 
 function ordenarProdutos(tipo) {
   if (!allProducts || allProducts.length === 0) return;
-
   const cards = [...document.querySelectorAll('#produtos-container .product-card')];
   if (cards.length === 0) return;
-
   const nomesVisiveis = cards.map(card => {
     const titleEl = card.querySelector('.product-card-title');
     return titleEl ? titleEl.textContent.trim() : '';
   });
-
   const produtosFiltrados = allProducts.filter(p => nomesVisiveis.includes(p["Nome do Produto"]));
-
   let ordenados = [...produtosFiltrados];
-
   switch (tipo) {
     case 'menor-preco':
       ordenados.sort((a, b) => (parseFloat(a["Preço"]) || 0) - (parseFloat(b["Preço"]) || 0));
@@ -368,39 +333,32 @@ function ordenarProdutos(tipo) {
       ordenados.sort((a, b) => (b["Nome do Produto"] || '').localeCompare(a["Nome do Produto"] || ''));
       break;
   }
-
   renderProducts(ordenados);
 }
 
 // ============================================
-// MODAL DE QUANTIDADE (SEM CORES)
+// MODAL DE QUANTIDADE
 // ============================================
 function resetarModalUI() {
   const inputCustom = document.getElementById("custom-quantity");
   if (inputCustom) inputCustom.value = 1;
-
   document.querySelectorAll(".qty-option-btn").forEach((btn) => btn.classList.remove("selected"));
 }
 window.resetarModalUI = resetarModalUI;
 
 function adicionarSemCor(quantidade) {
   if (!tempProduct) return;
-
   const estoqueDisponivel = tempProduct.estoqueDisponivel || 0;
-
   if (!quantidade || quantidade <= 0) {
     showToast("Digite uma quantidade válida", "error", 2000);
     return;
   }
-
   if (quantidade > estoqueDisponivel) {
     showToast(`Só temos ${estoqueDisponivel} unidade(s) disponível(is)`, "error", 2500);
     return;
   }
-
   const uniqueId = `${tempProduct.id}-unico`;
   const totalPrice = tempProduct.price * quantidade;
-
   addToCart(uniqueId, tempProduct.name, totalPrice, tempProduct.img, tempProduct.id, quantidade);
   window.closeSizeModal();
 }
@@ -424,25 +382,22 @@ window.closeSizeModal = function () {
     modal.classList.remove("flex");
   }
   tempProduct = null;
-
   const imagemContainer = document.getElementById("product-single-image");
   if (imagemContainer) imagemContainer.remove();
 };
 
 // ============================================
-// VERIFICAR ESTOQUE NO SERVIDOR
+// VERIFICAR ESTOQUE
 // ============================================
 async function verificarEstoqueServidor(produtoId) {
   const cached = getEstoqueCache(produtoId);
   if (cached !== null) {
     return { success: true, id: produtoId, saldo: cached, cached: true };
   }
-
   return new Promise((resolve) => {
     const callbackName = "verificar_estoque_" + Date.now();
     let resolvido = false;
     let script = null;
-
     const finalizar = (resultado) => {
       if (resolvido) return;
       resolvido = true;
@@ -450,25 +405,16 @@ async function verificarEstoqueServidor(produtoId) {
       if (script && script.parentNode) script.parentNode.removeChild(script);
       resolve(resultado);
     };
-
     window[callbackName] = function (response) {
       if (response && response.success) {
         setEstoqueCache(produtoId, response.saldo);
       }
       finalizar(response);
     };
-
     script = document.createElement("script");
     script.src = `${ESTOQUE_API_URL}?modo=publico&tipo=verificar_estoque&id=${encodeURIComponent(produtoId)}&callback=${callbackName}`;
-
-    script.onerror = function () {
-      finalizar({ success: false, error: "Erro de rede" });
-    };
-
-    setTimeout(() => {
-      finalizar({ success: false, error: "Timeout" });
-    }, 3000);
-
+    script.onerror = function () { finalizar({ success: false, error: "Erro de rede" }); };
+    setTimeout(() => { finalizar({ success: false, error: "Timeout" }); }, 3000);
     document.body.appendChild(script);
   });
 }
@@ -589,25 +535,22 @@ window.changeQty = function (id, delta) {
 function addToCart(id, name, price, img, baseId, quantity) {
   const qty = quantity || 1;
   const existing = cart.find((i) => i.id === id);
-
   if (existing) {
     existing.quantity += qty;
     existing.price += price;
   } else {
     cart.push({ id, name, price, img, quantity: qty, baseId });
   }
-
   showToast(`✅ ${name.substring(0, 30)} adicionado!`, "success", 2000);
   updateCart();
 }
 
 // ============================================
-// RENDERIZAR PRODUTOS (SEM REF/SUBCAT/CAT)
+// RENDERIZAR PRODUTOS
 // ============================================
 function renderProducts(products) {
   const container = document.getElementById("produtos-container");
   if (!container) return;
-
   container.innerHTML = "";
 
   if (!products || products.length === 0) {
@@ -631,8 +574,8 @@ function renderProducts(products) {
     let stockBadge = "";
     if (estoque <= 0) {
       stockBadge = `<span class="stock-out"><i class="fas fa-times-circle"></i> Indisponível</span>`;
-    } else if (estoque <= 3) {
-      stockBadge = `<span class="stock-low"><i class="fas fa-exclamation-triangle"></i> Últimas ${estoque}!</span>`;
+    } else if (estoque === 1) {
+      stockBadge = `<span class="stock-last"><i class="fas fa-fire"></i> Última unidade!</span>`;
     } else {
       stockBadge = `<span class="stock-available"><i class="fas fa-check-circle"></i> ${estoque} disponíveis</span>`;
     }
@@ -677,7 +620,6 @@ function renderProducts(products) {
         ${botaoHTML}
       </div>
     `;
-
     fragment.appendChild(card);
   });
 
@@ -743,7 +685,6 @@ function renderizarMarquee(items) {
   }
 
   const listaDuplicada = [...items, ...items];
-
   track.innerHTML = listaDuplicada
     .map((item) => {
       const classeCor = item.cor === "dourado" ? "marquee-item-accent" : "";
@@ -760,41 +701,34 @@ function renderizarMarquee(items) {
 // ============================================
 function aplicarConfig(cfg) {
   if (!cfg || typeof cfg !== "object") return;
-
   siteConfig = Object.assign({}, siteConfig, cfg);
-
   if (cfg.freteGratisValor) FRETE_GRATIS_VALOR = parseFloat(cfg.freteGratisValor) || 100;
   if (cfg.taxaFrete) TAXA_FRETE = parseFloat(cfg.taxaFrete) || 5;
-
   const whatsNumero = String(cfg.whatsapp || siteConfig.whatsapp).replace(/\D/g, "");
   const whatsLink = `https://wa.me/${whatsNumero}`;
-
   document.querySelectorAll('a[href*="wa.me"]').forEach((a) => {
     a.href = whatsLink;
   });
-
   const instaUser = String(cfg.instagram || siteConfig.instagram || '').replace("@", "");
   document.querySelectorAll('a[href*="instagram.com"]').forEach((a) => {
     a.href = `https://www.instagram.com/${instaUser}`;
   });
-
   window.__whatsappNumero = whatsNumero;
 }
 window.aplicarConfig = aplicarConfig;
 
 // ============================================
-// ZOOM COM LUPA (2 NÍVEIS)
+// ZOOM COM LUPA
 // ============================================
-let zoomScale = 1;              // Escala atual
-let zoomPositionX = 0;          // Posição X ao arrastar
-let zoomPositionY = 0;          // Posição Y ao arrastar
+let zoomScale = 1;
+let zoomPositionX = 0;
+let zoomPositionY = 0;
 let isDragging = false;
 let dragStartX = 0;
 let dragStartY = 0;
 
 const ZOOM_MIN = 1;
 const ZOOM_MAX = 5;
-const ZOOM_STEP = 0.5;
 
 function abrirZoomDireto(imagem) {
   const modal = document.getElementById("image-zoom-modal");
@@ -836,9 +770,7 @@ function abrirZoomDireto(imagem) {
     thumbnails.appendChild(thumb);
   });
 
-  // 🎯 Configurar eventos de zoom e drag
   configurarEventosZoom();
-
   modal.classList.add("active");
   document.body.style.overflow = "hidden";
 }
@@ -848,33 +780,27 @@ function configurarEventosZoom() {
   const modal = document.getElementById("image-zoom-modal");
   if (!img || !modal) return;
 
-  // Remove eventos antigos para não duplicar
   const imgClone = img.cloneNode(true);
   img.parentNode.replaceChild(imgClone, img);
   const newImg = document.getElementById("zoom-image");
 
-  // Clique na imagem → alterna zoom
   newImg.addEventListener('click', (e) => {
     e.stopPropagation();
     if (zoomScale === 1) {
-      // Aplicar zoom 2x
       zoomScale = 2.5;
       aplicarTransformacao();
       newImg.classList.add('zoomed');
       modal.classList.add('zoomed-active');
     } else {
-      // Resetar
       resetZoom();
     }
   });
 
-  // Duplo clique → resetar
   newImg.addEventListener('dblclick', (e) => {
     e.stopPropagation();
     resetZoom();
   });
 
-  // Arrastar quando estiver com zoom
   newImg.addEventListener('mousedown', (e) => {
     if (zoomScale <= 1) return;
     e.preventDefault();
@@ -883,21 +809,15 @@ function configurarEventosZoom() {
     dragStartY = e.clientY - zoomPositionY;
   });
 
-  // Roda do mouse → zoom gradual
   modal.addEventListener('wheel', (e) => {
     if (!modal.classList.contains('active')) return;
     e.preventDefault();
-
     if (e.deltaY < 0) {
-      // Scroll pra cima → zoom in
       zoomScale = Math.min(zoomScale + 0.2, ZOOM_MAX);
     } else {
-      // Scroll pra baixo → zoom out
       zoomScale = Math.max(zoomScale - 0.2, ZOOM_MIN);
     }
-
     aplicarTransformacao();
-
     if (zoomScale > 1) {
       newImg.classList.add('zoomed');
       modal.classList.add('zoomed-active');
@@ -909,17 +829,14 @@ function configurarEventosZoom() {
     }
   }, { passive: false });
 
-  // Movimento global (mouse sai da imagem)
   document.addEventListener('mousemove', handleMouseMove);
   document.addEventListener('mouseup', handleMouseUp);
 
-  // Touch (mobile)
   let touchStartDistance = 0;
   let touchStartScale = 1;
 
   newImg.addEventListener('touchstart', (e) => {
     if (e.touches.length === 2) {
-      // Pinça com 2 dedos
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
       touchStartDistance = Math.sqrt(dx * dx + dy * dy);
@@ -939,7 +856,6 @@ function configurarEventosZoom() {
       const distance = Math.sqrt(dx * dx + dy * dy);
       zoomScale = Math.min(Math.max(touchStartScale * (distance / touchStartDistance), ZOOM_MIN), ZOOM_MAX);
       aplicarTransformacao();
-
       if (zoomScale > 1) {
         newImg.classList.add('zoomed');
         modal.classList.add('zoomed-active');
@@ -974,15 +890,10 @@ function handleMouseUp() {
 function aplicarTransformacao() {
   const img = document.getElementById("zoom-image");
   if (!img) return;
-
-  // Limita o arrasto para não perder a imagem de vista
   const maxOffset = 200 * (zoomScale - 1);
   zoomPositionX = Math.max(-maxOffset, Math.min(maxOffset, zoomPositionX));
   zoomPositionY = Math.max(-maxOffset, Math.min(maxOffset, zoomPositionY));
-
   img.style.transform = `scale(${zoomScale}) translate(${zoomPositionX / zoomScale}px, ${zoomPositionY / zoomScale}px)`;
-
-  // Atualiza indicador
   const indicator = document.getElementById('zoom-indicator');
   if (indicator) {
     indicator.textContent = `🔍 Zoom ${Math.round(zoomScale * 100)}% — Arraste para explorar`;
@@ -992,10 +903,8 @@ function aplicarTransformacao() {
 function aplicarZoom(delta) {
   zoomScale = Math.min(Math.max(zoomScale + delta, ZOOM_MIN), ZOOM_MAX);
   aplicarTransformacao();
-
   const img = document.getElementById("zoom-image");
   const modal = document.getElementById("image-zoom-modal");
-
   if (zoomScale > 1) {
     img.classList.add('zoomed');
     modal.classList.add('zoomed-active');
@@ -1012,7 +921,6 @@ function resetZoom() {
   zoomScale = 1;
   zoomPositionX = 0;
   zoomPositionY = 0;
-
   const img = document.getElementById("zoom-image");
   const modal = document.getElementById("image-zoom-modal");
   if (img) {
@@ -1055,9 +963,8 @@ window.zoomAnterior = zoomAnterior;
 window.zoomProximo = zoomProximo;
 window.abrirZoomDireto = abrirZoomDireto;
 
-
 // ============================================
-// OPEN SIZE SELECTOR (SÓ QUANTIDADE)
+// OPEN SIZE SELECTOR
 // ============================================
 window.openSizeSelector = function (id, name, price, img) {
   const p = allProducts.find((prod) => String(prod["ID"]) === String(id));
@@ -1096,11 +1003,12 @@ window.openSizeSelector = function (id, name, price, img) {
   const priceEl = document.getElementById("size-product-price");
 
   if (nameEl) nameEl.innerText = name;
-  if (refEl) refEl.style.display = "none"; // 🚫 Sem referência
+  if (refEl) refEl.style.display = "none";
   if (priceEl) {
+    const labelEstoque = estoqueDisponivel === 1 ? 'unidade disponível' : 'unidades disponíveis';
     priceEl.innerHTML = `
       R$ ${priceNum.toFixed(2).replace(".", ",")} cada
-      <small id="estoque-display">${estoqueDisponivel} unidades disponíveis${jaNoCarrinho > 0 ? ` (${jaNoCarrinho} no carrinho)` : ""}</small>
+      <small id="estoque-display">${estoqueDisponivel} ${labelEstoque}${jaNoCarrinho > 0 ? ` (${jaNoCarrinho} no carrinho)` : ""}</small>
     `;
   }
 
@@ -1117,7 +1025,6 @@ window.openSizeSelector = function (id, name, price, img) {
     };
   }
 
-  // 🚫 Cores removidas — sempre esconde
   const colorStep = document.getElementById("color-step");
   const summaryContainer = document.getElementById("selection-summary");
   if (colorStep) colorStep.classList.add("hidden");
@@ -1164,15 +1071,12 @@ window.openSizeSelector = function (id, name, price, img) {
       const saldoServidor = parseInt(resp.saldo) || 0;
       p["Saldo Estoque"] = saldoServidor;
       const novoDisponivel = saldoServidor - jaNoCarrinho;
-
       if (tempProduct && String(tempProduct.id) === String(id)) {
         tempProduct.estoqueDisponivel = novoDisponivel;
-
         const estoqueDisplay = document.getElementById("estoque-display");
         if (estoqueDisplay) {
           estoqueDisplay.textContent = `${novoDisponivel} unidades disponíveis${jaNoCarrinho > 0 ? ` (${jaNoCarrinho} no carrinho)` : ""}`;
         }
-
         if (novoDisponivel < estoqueDisponivel && novoDisponivel >= 0) {
           showToast(`⚠️ Estoque atualizado: ${novoDisponivel} disponíveis`, "warning", 2500);
         }
@@ -1184,7 +1088,7 @@ window.openSizeSelector = function (id, name, price, img) {
 };
 
 // ============================================
-// BUSCA (SÓ POR NOME)
+// BUSCA
 // ============================================
 function performSearch(termo) {
   const termoNormalizado = normalizar(termo);
@@ -1195,7 +1099,7 @@ function performSearch(termo) {
 }
 
 // ============================================
-// PDF (SEM REF)
+// PDF
 // ============================================
 function gerarConteudoPDF() {
   const nomeCliente = document.getElementById("customer-name").value || "Não informado";
@@ -1204,7 +1108,6 @@ function gerarConteudoPDF() {
   const horaAtual = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
   const totalFinal = subtotal >= FRETE_GRATIS_VALOR ? subtotal : subtotal + TAXA_FRETE;
   const freteTexto = subtotal >= FRETE_GRATIS_VALOR ? "Grátis" : `R$ ${TAXA_FRETE.toFixed(2).replace(".", ",")}`;
-
   const numeroPedido = String(Date.now()).slice(-6);
   const anoAtual = new Date().getFullYear();
 
@@ -1227,16 +1130,9 @@ function gerarConteudoPDF() {
 
   return `
   <div class="pdf-preview-content" id="pdf-content-to-print" style="
-    width: 210mm;
-    min-height: 297mm;
-    padding: 0;
-    background: #ffffff;
-    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
-    box-sizing: border-box;
-    color: #1a1a2e;
-    display: flex;
-    flex-direction: column;
-    position: relative;
+    width: 210mm; min-height: 297mm; padding: 0; background: #ffffff;
+    font-family: 'Plus Jakarta Sans', Arial, sans-serif; box-sizing: border-box;
+    color: #1a1a2e; display: flex; flex-direction: column; position: relative;
   ">
     <div style="height: 4px; background: linear-gradient(90deg, #6d28d9 0%, #f59e0b 100%);"></div>
     <div style="flex: 1; padding: 6mm 2mm 6mm 2mm; display: flex; flex-direction: column;">
@@ -1312,12 +1208,9 @@ async function visualizarPDF() {
   if (cart.length === 0) { showToast("Sacola vazia!", "error", 2000); return; }
   if (!document.getElementById("customer-name").value.trim()) { showToast("Informe seu nome!", "error", 2000); return; }
   if (!document.getElementById("address").value.trim()) { showToast("Informe o endereço!", "error", 2000); return; }
-
   const ok = await carregarLibsPDF();
   if (!ok) { showToast("Erro ao carregar gerador de PDF", "error"); return; }
-
   if (document.fonts && document.fonts.ready) await document.fonts.ready;
-
   document.getElementById("pdf-preview-content").innerHTML = gerarConteudoPDF();
   document.getElementById("pdf-preview-modal").classList.remove("hidden");
   document.getElementById("pdf-preview-modal").classList.add("flex");
@@ -1328,7 +1221,6 @@ let pdfLibsLoaded = false;
 async function carregarLibsPDF() {
   if (pdfLibsLoaded) return true;
   if (window.jspdf && window.html2canvas) { pdfLibsLoaded = true; return true; }
-
   return new Promise((resolve) => {
     const loadScript = (src) => {
       return new Promise((res, rej) => {
@@ -1339,7 +1231,6 @@ async function carregarLibsPDF() {
         document.head.appendChild(s);
       });
     };
-
     Promise.all([
       loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'),
       loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js')
@@ -1354,13 +1245,10 @@ async function processarPedidoPublico(nomeCliente, endereco) {
     if (!itensParaBaixar[baseId]) itensParaBaixar[baseId] = 0;
     itensParaBaixar[baseId] += item.quantity;
   });
-
   const itemsCompactos = Object.keys(itensParaBaixar).map((id) => `${id}:${itensParaBaixar[id]}`).join(',');
-
   const itensTexto = cart
     .map((i) => `${i.quantity}x ${i.name} (R$ ${(i.price / i.quantity).toFixed(2).replace(".", ",")} cada)`)
     .join(" | ");
-
   const totalFinal = subtotal >= FRETE_GRATIS_VALOR ? subtotal : subtotal + TAXA_FRETE;
   const freteAplicado = subtotal >= FRETE_GRATIS_VALOR ? 0 : TAXA_FRETE;
 
@@ -1368,7 +1256,6 @@ async function processarPedidoPublico(nomeCliente, endereco) {
     const callbackName = "fazer_pedido_" + Date.now();
     let resolvido = false;
     let script = null;
-
     const finalizar = (dados) => {
       if (resolvido) return;
       resolvido = true;
@@ -1376,9 +1263,7 @@ async function processarPedidoPublico(nomeCliente, endereco) {
       if (script && script.parentNode) script.parentNode.removeChild(script);
       resolve(dados);
     };
-
     window[callbackName] = function (data) { finalizar(data); };
-
     script = document.createElement("script");
     const params =
       `modo=publico&tipo=fazer_pedido` +
@@ -1391,12 +1276,9 @@ async function processarPedidoPublico(nomeCliente, endereco) {
       `&data=${encodeURIComponent(new Date().toISOString())}` +
       `&itemsCompactos=${encodeURIComponent(itemsCompactos)}` +
       `&callback=${callbackName}`;
-
     script.src = `${ESTOQUE_API_URL}?${params}`;
-
     script.onerror = function () { finalizar({ success: false, error: "Erro de rede ao enviar pedido" }); };
     setTimeout(() => { finalizar({ success: false, error: "Timeout ao processar pedido" }); }, 20000);
-
     document.body.appendChild(script);
   });
 }
@@ -1404,47 +1286,33 @@ async function processarPedidoPublico(nomeCliente, endereco) {
 async function downloadPDF() {
   let element = document.getElementById("pdf-content-to-print");
   if (!element) { await visualizarPDF(); setTimeout(() => downloadPDF(), 500); return; }
-
   const nomeCliente = document.getElementById("customer-name").value.trim();
   const endereco = document.getElementById("address").value.trim();
-
   if (cart.length === 0) { showToast("Sacola vazia!", "error", 2000); return; }
   if (!nomeCliente) { showToast("Informe seu nome!", "error", 2000); return; }
   if (!endereco) { showToast("Informe o endereço!", "error", 2000); return; }
-
   const btn = document.getElementById("download-pdf-btn");
   const original = btn ? btn.innerHTML : "";
   if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...'; }
-
   showToast("Gerando PDF...", "info", 2000);
-
   try {
     await carregarLibsPDF();
     if (document.fonts && document.fonts.ready) await document.fonts.ready;
-
     const canvas = await html2canvas(element, {
-      scale: 2,
-      backgroundColor: "#ffffff",
-      useCORS: true,
-      logging: false,
-      windowWidth: element.scrollWidth,
-      windowHeight: element.scrollHeight
+      scale: 2, backgroundColor: "#ffffff", useCORS: true, logging: false,
+      windowWidth: element.scrollWidth, windowHeight: element.scrollHeight
     });
     const imgData = canvas.toDataURL("image/jpeg", 0.85);
-
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
-
     const pageWidth = 210;
     const pageHeight = 297;
     const margin = 4;
     const printableWidth = pageWidth - margin * 2;
     const printableHeight = pageHeight - margin * 2;
-
     const imgRatio = canvas.height / canvas.width;
     let imgWidth = printableWidth;
     let imgHeight = imgWidth * imgRatio;
-
     if (imgHeight <= printableHeight) {
       const yOffset = margin + (printableHeight - imgHeight) / 2;
       pdf.addImage(imgData, "JPEG", margin, yOffset, imgWidth, imgHeight, undefined, "FAST");
@@ -1458,32 +1326,24 @@ async function downloadPDF() {
         pageNum++;
       }
     }
-
     const dataArquivo = new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-");
     pdf.save(`Pedido_WRAromatizantes_${dataArquivo}.pdf`);
-
     const resultado = await processarPedidoPublico(nomeCliente, endereco);
-
     if (!resultado || !resultado.success) {
       throw new Error((resultado && resultado.error) || "Erro ao salvar pedido");
     }
-
     cart = [];
     updateCart();
     document.getElementById("customer-name").value = "";
     document.getElementById("address").value = "";
-
     document.getElementById("pdf-preview-modal")?.classList.add("hidden");
     document.getElementById("pdf-preview-modal")?.classList.remove("flex");
     document.getElementById("cart-modal")?.classList.add("hidden");
     document.getElementById("cart-modal")?.classList.remove("flex");
-
     showToast("✅ Pedido finalizado! PDF baixado.", "success", 4000);
-
     invalidarEstoqueCache();
     localStorage.removeItem(CACHE_KEY_DADOS);
     carregarTudo();
-
   } catch (error) {
     console.error("❌ Erro:", error);
     showToast("❌ Erro: " + error.message + " — O PDF foi baixado, mas o pedido NÃO foi salvo.", "error", 6000);
@@ -1495,43 +1355,31 @@ async function downloadPDF() {
 async function finalizarPedidoDireto() {
   const nomeCliente = document.getElementById("customer-name").value;
   const endereco = document.getElementById("address").value;
-
   if (cart.length === 0) { showToast("Sacola vazia!", "error", 2000); return; }
   if (!nomeCliente.trim()) { showToast("Informe seu nome!", "error", 2000); document.getElementById("customer-name").focus(); return; }
   if (!endereco.trim()) { showToast("Informe o endereço!", "error", 2000); document.getElementById("address").focus(); return; }
-
   const checkoutBtn = document.getElementById("checkout-btn");
   if (checkoutBtn) { checkoutBtn.disabled = true; checkoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...'; }
-
   try {
     const totalFinal = subtotal >= FRETE_GRATIS_VALOR ? subtotal : subtotal + TAXA_FRETE;
     const freteExibicao = subtotal >= FRETE_GRATIS_VALOR ? "GRÁTIS" : `R$ ${TAXA_FRETE.toFixed(2).replace(".", ",")}`;
-
     const resultado = await processarPedidoPublico(nomeCliente, endereco);
-
     if (!resultado || !resultado.success) {
       throw new Error((resultado && resultado.error) || "Erro ao salvar pedido");
     }
-
     const mensagemWhats = `🛍️ *NOVO PEDIDO - WR AROMATIZANTES* 🛍️\n\n👤 *CLIENTE:* ${nomeCliente.toUpperCase()}\n📍 *ENDEREÇO:* ${endereco}\n\n*📦 ITENS DO PEDIDO:*\n${cart.map((i) => `✅ ${i.quantity}x ${i.name} - R$ ${(i.price / i.quantity).toFixed(2).replace(".", ",")} cada`).join("\n")}\n\n*💰 RESUMO DO PEDIDO:*\n─────────────────\nSubtotal: R$ ${subtotal.toFixed(2).replace(".", ",")}\nFrete: ${freteExibicao}\n─────────────────\n*TOTAL: R$ ${totalFinal.toFixed(2).replace(".", ",")}*\n─────────────────\n\n✨ *Obrigado pela preferência!*`;
-
     const numeroWhats = window.__whatsappNumero || String(siteConfig.whatsapp).replace(/\D/g, "") || "5588999049636";
-
     cart = [];
     updateCart();
     document.getElementById("customer-name").value = "";
     document.getElementById("address").value = "";
     document.getElementById("cart-modal")?.classList.add("hidden");
     document.getElementById("cart-modal")?.classList.remove("flex");
-
     window.open(`https://wa.me/${numeroWhats}?text=${encodeURIComponent(mensagemWhats)}`, "_blank");
-
     showToast("✅ Pedido enviado e estoque atualizado!", "success", 4000);
-
     invalidarEstoqueCache();
     localStorage.removeItem(CACHE_KEY_DADOS);
     carregarTudo();
-
   } catch (error) {
     console.error("❌ Erro:", error);
     showToast("❌ Erro: " + error.message, "error", 4000);
@@ -1544,68 +1392,182 @@ async function finalizarPedidoDireto() {
 }
 
 // ============================================
-// FILTRAR POR CATEGORIA (SÓ NOME/CATEGORIA)
+// FILTRO ACUMULATIVO (Categoria + Subcategoria)
 // ============================================
-function filtrarPorCategoria(categoria) {
+function filtrarPorCategoria(categoria, tipo = 'categoria') {
   if (typeof allProducts === "undefined" || typeof renderProducts === "undefined") return;
 
-  // 🎯 Mapa de aliases: o que o usuário clica → o que buscar
-  const aliases = {
-    "1litro": ["refil", "1l", "1 litro", "litro"],
-    "spray 120ml": ["spray 120", "120ml", "120 ml"],
-    "spray 500ml": ["spray 500", "500ml", "500 ml"],
-    "automotivo": ["automotiv", "carro", "moto", "auto"]
-  };
-
   const catNorm = normalizar(categoria);
-  
-  // Se tem alias, usa os termos alternativos; senão, usa o próprio
-  const termosBusca = aliases[catNorm] || [catNorm];
 
-  const filtrados =
-    categoria === "todos"
-      ? allProducts
-      : allProducts.filter((p) => {
-          const catProduto = normalizar(p["Categoria"] || "");
-          const nomeProduto = normalizar(p["Nome do Produto"] || "");
-          const combinado = catProduto + " " + nomeProduto;
+  // Toggle
+  if (categoria === "todos") {
+    filtroCategoriaAtivo = 'todos';
+    filtroSubcategoriaAtivo = '';
+  } else if (tipo === 'subcategoria') {
+    if (filtroSubcategoriaAtivo === catNorm) {
+      filtroSubcategoriaAtivo = '';
+    } else {
+      filtroSubcategoriaAtivo = catNorm;
+    }
+  } else {
+    if (filtroCategoriaAtivo === catNorm) {
+      filtroCategoriaAtivo = 'todos';
+    } else {
+      filtroCategoriaAtivo = catNorm;
+    }
+  }
 
-          // Verifica se ALGUM dos termos de busca está no combinado
-          return termosBusca.some(termo => {
-            const termoNorm = normalizar(termo);
-            const palavrasTermo = termoNorm.split(/\s+/).filter((w) => w.length > 0);
-            const palavrasTermoNorm = palavrasTermo.map(normalizarPalavraBusca);
-            const combinadoNorm = combinado.split(/\s+/).map(normalizarPalavraBusca).join(" ");
-            return palavrasTermoNorm.every((palavra) => combinadoNorm.includes(palavra));
-          });
-        });
+  // Aplicar
+  let filtrados = allProducts;
 
+  if (filtroCategoriaAtivo !== 'todos') {
+    const aliases = {
+      "spray 500ml": ["spray 500", "500ml", "500 ml"],
+      "spray 120ml": ["spray 120", "120ml", "120 ml"],
+      "refil 1l": ["refil", "1l", "1 litro", "litro"],
+      "linha automotiva": ["automotiv", "carro", "moto", "auto"],
+      "perfumaria": ["perfum", "baboo", "momentos", "mamãe"],
+      "kit presente": ["kit", "presente"]
+    };
+    const termosBusca = aliases[filtroCategoriaAtivo] || [filtroCategoriaAtivo];
+    filtrados = filtrados.filter(p => {
+      const catProduto = normalizar(p["Categoria"] || "");
+      const nomeProduto = normalizar(p["Nome do Produto"] || "");
+      const combinado = catProduto + " " + nomeProduto;
+      return termosBusca.some(termo => {
+        const termoNorm = normalizar(termo);
+        const palavras = termoNorm.split(/\s+/).filter(w => w.length > 0);
+        const palavrasNorm = palavras.map(normalizarPalavraBusca);
+        const combinadoNorm = combinado.split(/\s+/).map(normalizarPalavraBusca).join(" ");
+        return palavrasNorm.every(p => combinadoNorm.includes(p));
+      });
+    });
+  }
+
+  if (filtroSubcategoriaAtivo) {
+    filtrados = filtrados.filter(p =>
+      normalizar(p["Subcategoria"] || '') === filtroSubcategoriaAtivo
+    );
+  }
+
+  // Renderizar
   renderProducts(filtrados);
-
   setTimeout(atualizarContadorProdutos, 100);
   setTimeout(atualizarContadoresSidebar, 100);
 
   const produtosSection = document.getElementById("produtos");
   if (produtosSection) produtosSection.scrollIntoView({ behavior: "smooth", block: "start" });
 
-  marcarItemSidebarAtivo(categoria);
+  marcarItemSidebarAtivo();
 
+  // Título dinâmico
   const titleEl = document.getElementById('products-title');
   const subtitleEl = document.getElementById('products-subtitle');
-
-  if (categoria === 'todos') {
+  const nomes = [];
+  if (filtroCategoriaAtivo !== 'todos') {
+    nomes.push(filtroCategoriaAtivo.split(' ').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' '));
+  }
+  if (filtroSubcategoriaAtivo) {
+    nomes.push(filtroSubcategoriaAtivo.split(' ').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' '));
+  }
+  if (nomes.length === 0) {
     if (titleEl) titleEl.textContent = 'Nossas Fragrâncias';
     if (subtitleEl) subtitleEl.textContent = 'O cheirinho mais querido do Brasil';
   } else {
-    const nomeFormatado = categoria
-      .split(' ')
-      .map(p => p.charAt(0).toUpperCase() + p.slice(1))
-      .join(' ');
-    if (titleEl) titleEl.textContent = nomeFormatado;
-    if (subtitleEl) subtitleEl.textContent = 'Produtos filtrados';
+    if (titleEl) titleEl.textContent = nomes.join(' + ');
+    if (subtitleEl) {
+      subtitleEl.textContent = filtroCategoriaAtivo !== 'todos' && filtroSubcategoriaAtivo
+        ? 'Categoria + Família olfativa'
+        : (filtroSubcategoriaAtivo ? 'Família olfativa' : 'Produtos filtrados');
+    }
   }
 }
 window.filtrarPorCategoria = filtrarPorCategoria;
+
+// ============================================
+// SIDEBAR DINÂMICA
+// ============================================
+const ICONES_CATEGORIA = {
+  'spray 500ml': { icon: 'fa-spray-can', bg: 'linear-gradient(135deg, #fef3c7, #fcd34d)', color: '#92400e' },
+  'spray 120ml': { icon: 'fa-spray-can', bg: 'linear-gradient(135deg, #ede9fe, #c4b5fd)', color: '#6d28d9' },
+  'refil 1l': { icon: 'fa-fill-drip', bg: 'linear-gradient(135deg, #dbeafe, #93c5fd)', color: '#1e40af' },
+  'linha automotiva': { icon: 'fa-car-side', bg: 'linear-gradient(135deg, #fce7f3, #f9a8d4)', color: '#9d174d' },
+  'perfumaria': { icon: 'fa-spa', bg: 'linear-gradient(135deg, #f3e8ff, #e9d5ff)', color: '#7e22ce' },
+  'kit presente': { icon: 'fa-gift', bg: 'linear-gradient(135deg, #fce7f3, #fbcfe8)', color: '#be185d' }
+};
+
+const ICONES_SUBCATEGORIA = {
+  'cascas e folhas': { icon: 'fa-leaf', bg: 'linear-gradient(135deg, #dcfce7, #86efac)', color: '#166534' },
+  'lavanda': { icon: 'fa-spa', bg: 'linear-gradient(135deg, #ede9fe, #c4b5fd)', color: '#6d28d9' },
+  'citrus': { icon: 'fa-lemon', bg: 'linear-gradient(135deg, #fef9c3, #fde047)', color: '#854d0e' },
+  'floral': { icon: 'fa-seedling', bg: 'linear-gradient(135deg, #fce7f3, #fbcfe8)', color: '#be185d' },
+  'amadeirado': { icon: 'fa-tree', bg: 'linear-gradient(135deg, #f5f5dc, #d6d3d1)', color: '#57534e' },
+  'frutado': { icon: 'fa-apple-whole', bg: 'linear-gradient(135deg, #ffedd5, #fdba74)', color: '#c2410c' },
+  'fresco': { icon: 'fa-wind', bg: 'linear-gradient(135deg, #cffafe, #67e8f9)', color: '#0e7490' },
+  'doce': { icon: 'fa-candy-cane', bg: 'linear-gradient(135deg, #fce7f3, #f9a8d4)', color: '#be185d' },
+  'herbal': { icon: 'fa-mortar-pestle', bg: 'linear-gradient(135deg, #dcfce7, #bbf7d0)', color: '#166534' },
+  'oriental': { icon: 'fa-moon', bg: 'linear-gradient(135deg, #ede9fe, #ddd6fe)', color: '#5b21b6' },
+  'automotivo': { icon: 'fa-car', bg: 'linear-gradient(135deg, #fce7f3, #f9a8d4)', color: '#9d174d' },
+  'perfumaria': { icon: 'fa-spray-can-sparkles', bg: 'linear-gradient(135deg, #f3e8ff, #e9d5ff)', color: '#7e22ce' }
+};
+
+function renderizarSidebarDinamica() {
+  const container = document.getElementById('sidebar-categorias-dinamicas');
+  if (!container) return;
+
+  const categorias = {};
+  const subcategorias = {};
+
+  allProducts.forEach(p => {
+    const cat = (p["Categoria"] || '').trim();
+    const sub = (p["Subcategoria"] || '').trim();
+    if (cat) categorias[cat] = (categorias[cat] || 0) + 1;
+    if (sub) subcategorias[sub] = (subcategorias[sub] || 0) + 1;
+  });
+
+  let html = '';
+
+  if (Object.keys(categorias).length > 0) {
+    html += `<p class="sidebar-section-label">📦 Linhas</p>`;
+    Object.entries(categorias)
+      .sort((a, b) => b[1] - a[1])
+      .forEach(([cat, qtd]) => {
+        const key = normalizar(cat);
+        const ic = ICONES_CATEGORIA[key] || { icon: 'fa-tag', bg: 'linear-gradient(135deg, #ede9fe, #c4b5fd)', color: '#6d28d9' };
+        html += `
+          <button class="sidebar-item sidebar-item-category" data-categoria="${normalizar(cat)}" data-tipo="categoria">
+            <span class="sidebar-icon" style="background: ${ic.bg};">
+              <i class="fa-solid ${ic.icon}" style="color: ${ic.color};"></i>
+            </span>
+            <span class="sidebar-label">${cat}</span>
+            <span class="sidebar-count">${qtd}</span>
+          </button>
+        `;
+      });
+  }
+
+  if (Object.keys(subcategorias).length > 0) {
+    html += `<p class="sidebar-section-label">🌸 Famílias Olfativas</p>`;
+    Object.entries(subcategorias)
+      .sort((a, b) => b[1] - a[1])
+      .forEach(([sub, qtd]) => {
+        const key = normalizar(sub);
+        const ic = ICONES_SUBCATEGORIA[key] || { icon: 'fa-leaf', bg: 'linear-gradient(135deg, #dcfce7, #bbf7d0)', color: '#166534' };
+        html += `
+          <button class="sidebar-item sidebar-item-category" data-categoria="${normalizar(sub)}" data-tipo="subcategoria">
+            <span class="sidebar-icon" style="background: ${ic.bg};">
+              <i class="fa-solid ${ic.icon}" style="color: ${ic.color};"></i>
+            </span>
+            <span class="sidebar-label">${sub}</span>
+            <span class="sidebar-count">${qtd}</span>
+          </button>
+        `;
+      });
+  }
+
+  container.innerHTML = html;
+}
+window.renderizarSidebarDinamica = renderizarSidebarDinamica;
 
 // ============================================
 // INICIALIZAÇÃO
@@ -1619,31 +1581,26 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById('sidebar-close-mobile')?.addEventListener('click', fecharSidebarMobile);
   document.getElementById('sidebar-overlay')?.addEventListener('click', fecharSidebarMobile);
 
-  document.querySelectorAll('.sidebar-item').forEach(btn => {
-    btn.addEventListener('click', function (e) {
+  // ⭐ Event delegation na sidebar (pega itens fixos E dinâmicos)
+  const sidebarScroll = document.getElementById('sidebar-scroll');
+  if (sidebarScroll) {
+    sidebarScroll.addEventListener('click', function (e) {
+      const btn = e.target.closest('.sidebar-item, .sidebar-item-category');
+      if (!btn) return;
       e.preventDefault();
-      const categoria = this.getAttribute('data-categoria');
-      if (!categoria) return;
-      marcarItemSidebarAtivo(categoria);
-      filtrarPorCategoria(categoria);
-      if (window.innerWidth <= 900) fecharSidebarMobile();
-    });
-  });
 
-  document.querySelectorAll('.sidebar-item-sub').forEach(btn => {
-    btn.addEventListener('click', function (e) {
-      e.preventDefault();
-      const categoria = this.getAttribute('data-categoria');
+      const categoria = btn.getAttribute('data-categoria');
+      const tipo = btn.getAttribute('data-tipo') || 'categoria';
       if (!categoria) return;
-      marcarItemSidebarAtivo(categoria);
-      filtrarPorCategoria(categoria);
+
+      filtrarPorCategoria(categoria, tipo);
       if (window.innerWidth <= 900) fecharSidebarMobile();
     });
-  });
+  }
 
   document.getElementById('sidebar-search')?.addEventListener('input', function (e) {
     const termo = normalizar(e.target.value);
-    document.querySelectorAll('.sidebar-item, .sidebar-item-sub, .sidebar-group-title, .sidebar-subgroup-title').forEach(el => {
+    document.querySelectorAll('.sidebar-item, .sidebar-item-sub, .sidebar-item-category, .sidebar-group-title, .sidebar-subgroup-title').forEach(el => {
       const texto = normalizar(el.textContent);
       const match = !termo || texto.includes(termo);
       el.style.display = match ? '' : 'none';
@@ -1718,9 +1675,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("add-custom-qty")?.addEventListener("click", () => {
     const input = document.getElementById("custom-quantity");
     const qty = parseInt(input.value);
-
     if (!qty || qty <= 0) { showToast("Digite uma quantidade válida", "error", 2000); return; }
-
     window.adicionarSemCor(qty);
   });
 
