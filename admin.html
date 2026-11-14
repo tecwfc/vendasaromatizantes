@@ -48,7 +48,9 @@
             --gold: #f59e0b;
         }
 
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             background-color: #f0f2f5;
@@ -57,10 +59,21 @@
             padding: 0;
         }
 
-        .text-primary { color: var(--primary); }
-        .bg-primary { background-color: var(--primary); }
-        .bg-primary-dark { background-color: var(--primary-dark); }
-        .text-gold { color: var(--gold); }
+        .text-primary {
+            color: var(--primary);
+        }
+
+        .bg-primary {
+            background-color: var(--primary);
+        }
+
+        .bg-primary-dark {
+            background-color: var(--primary-dark);
+        }
+
+        .text-gold {
+            color: var(--gold);
+        }
 
         .dataTables_wrapper .dataTables_filter input {
             border-radius: 0.5rem;
@@ -96,7 +109,9 @@
             overflow-y: auto;
         }
 
-        .modal-overlay.active { display: flex; }
+        .modal-overlay.active {
+            display: flex;
+        }
 
         .modal-content {
             background: white;
@@ -110,13 +125,28 @@
             margin: auto;
         }
 
-        .modal-content-banner { max-width: 600px; }
-        .modal-content-vendas { max-width: 1200px; }
-        .modal-content-config { max-width: 800px; }
+        .modal-content-banner {
+            max-width: 600px;
+        }
+
+        .modal-content-vendas {
+            max-width: 1200px;
+        }
+
+        .modal-content-config {
+            max-width: 800px;
+        }
 
         @keyframes modalFadeIn {
-            from { transform: scale(0.95) translateY(20px); opacity: 0; }
-            to { transform: scale(1) translateY(0); opacity: 1; }
+            from {
+                transform: scale(0.95) translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
         }
 
         .card-dashboard {
@@ -129,14 +159,29 @@
         }
 
         .card-dashboard .icon {
-            width: 42px; height: 42px;
+            width: 42px;
+            height: 42px;
             border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px; flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
         }
 
-        .card-dashboard .value { font-size: 24px; font-weight: 800; line-height: 1.2; }
-        .card-dashboard .label { font-size: 10px; color: #6b7280; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .card-dashboard .value {
+            font-size: 24px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .card-dashboard .label {
+            font-size: 10px;
+            color: #6b7280;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
         .badge-estoque {
             display: inline-flex !important;
@@ -153,25 +198,93 @@
             justify-content: center !important;
         }
 
-        .badge-estoque.bg-red-100 { background: #fee2e2 !important; color: #991b1b !important; border-color: #f87171 !important; }
-        .badge-estoque.bg-yellow-100 { background: #fef9c3 !important; color: #92400e !important; border-color: #fbbf24 !important; animation: pulse-stock 1.5s ease-in-out infinite; }
-        .badge-estoque.bg-blue-100 { background: #dbeafe !important; color: #1e40af !important; border-color: #60a5fa !important; }
-        .badge-estoque.bg-green-100 { background: #dcfce7 !important; color: #166534 !important; border-color: #86efac !important; }
-
-        @keyframes pulse-stock {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        .badge-estoque.bg-red-100 {
+            background: #fee2e2 !important;
+            color: #991b1b !important;
+            border-color: #f87171 !important;
         }
 
-        .status-pago { color: #16a34a; background: #dcfce7; padding: 2px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-block; }
-        .status-pendente { color: #ca8a04; background: #fef9c3; padding: 2px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-block; }
-        .status-cancelado { color: #dc2626; background: #fee2e2; padding: 2px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-block; }
+        .badge-estoque.bg-yellow-100 {
+            background: #fef9c3 !important;
+            color: #92400e !important;
+            border-color: #fbbf24 !important;
+            animation: pulse-stock 1.5s ease-in-out infinite;
+        }
 
-        .btn-group { display: flex; flex-wrap: wrap; gap: 6px; }
-        .btn-group button { flex: 1; min-width: 80px; font-size: 12px; padding: 8px 12px; justify-content: center; }
+        .badge-estoque.bg-blue-100 {
+            background: #dbeafe !important;
+            color: #1e40af !important;
+            border-color: #60a5fa !important;
+        }
+
+        .badge-estoque.bg-green-100 {
+            background: #dcfce7 !important;
+            color: #166534 !important;
+            border-color: #86efac !important;
+        }
+
+        @keyframes pulse-stock {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .status-pago {
+            color: #16a34a;
+            background: #dcfce7;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-pendente {
+            color: #ca8a04;
+            background: #fef9c3;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-cancelado {
+            color: #dc2626;
+            background: #fee2e2;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .btn-group button {
+            flex: 1;
+            min-width: 80px;
+            font-size: 12px;
+            padding: 8px 12px;
+            justify-content: center;
+        }
 
         @media (max-width: 480px) {
-            .btn-group button { font-size: 10px; padding: 6px 8px; min-width: 60px; }
+            .btn-group button {
+                font-size: 10px;
+                padding: 6px 8px;
+                min-width: 60px;
+            }
         }
 
         .filtros-container {
@@ -185,16 +298,24 @@
         }
 
         .filtros-container label {
-            font-size: 10px; font-weight: 700; color: #6b7280;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            display: block; margin-bottom: 3px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 3px;
         }
 
         .filtros-container input,
         .filtros-container select {
-            width: 100%; padding: 6px 10px;
-            border: 1px solid #e5e7eb; border-radius: 8px;
-            font-size: 12px; outline: none; background: white;
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 12px;
+            outline: none;
+            background: white;
         }
 
         .filtros-container input:focus,
@@ -203,18 +324,40 @@
             box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.15);
         }
 
-        .filtros-actions { display: flex; gap: 6px; align-items: flex-end; }
-
-        .filtros-actions button {
-            padding: 6px 16px; border-radius: 8px;
-            font-size: 11px; font-weight: 700; border: none;
-            cursor: pointer; transition: all 0.3s; white-space: nowrap;
+        .filtros-actions {
+            display: flex;
+            gap: 6px;
+            align-items: flex-end;
         }
 
-        .btn-filtrar { background: var(--primary); color: white; }
-        .btn-filtrar:hover { background: var(--primary-dark); }
-        .btn-limpar { background: #e5e7eb; color: #4b5563; }
-        .btn-limpar:hover { background: #d1d5db; }
+        .filtros-actions button {
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-filtrar {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-filtrar:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-limpar {
+            background: #e5e7eb;
+            color: #4b5563;
+        }
+
+        .btn-limpar:hover {
+            background: #d1d5db;
+        }
 
         .vendas-table th {
             background: #f8f4fd !important;
@@ -225,17 +368,31 @@
         }
 
         .id-auto {
-            font-size: 11px; color: #6b7280;
-            background: #f3f4f6; padding: 2px 10px;
-            border-radius: 12px; display: inline-block; white-space: nowrap;
+            font-size: 11px;
+            color: #6b7280;
+            background: #f3f4f6;
+            padding: 2px 10px;
+            border-radius: 12px;
+            display: inline-block;
+            white-space: nowrap;
         }
 
-        .campo-categoria { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 6px; }
+        .campo-categoria {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin-top: 6px;
+        }
 
         .campo-categoria input {
-            flex: 1; min-width: 120px;
-            border: 1px solid #e5e7eb; border-radius: 8px;
-            padding: 6px 12px; font-size: 14px; outline: none;
+            flex: 1;
+            min-width: 120px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 14px;
+            outline: none;
         }
 
         .campo-categoria input:focus {
@@ -244,21 +401,43 @@
         }
 
         .campo-categoria button {
-            background: var(--primary); color: white;
-            border: none; border-radius: 8px;
-            padding: 6px 16px; font-weight: bold;
-            cursor: pointer; transition: background 0.2s; white-space: nowrap;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
         }
 
-        .campo-categoria button:hover { background: var(--primary-dark); }
+        .campo-categoria button:hover {
+            background: var(--primary-dark);
+        }
 
-        .field-hint { font-size: 10px; color: #9ca3af; margin-top: 3px; display: block; line-height: 1.3; }
-        .field-hint strong { color: var(--primary); font-weight: 700; }
+        .field-hint {
+            font-size: 10px;
+            color: #9ca3af;
+            margin-top: 3px;
+            display: block;
+            line-height: 1.3;
+        }
+
+        .field-hint strong {
+            color: var(--primary);
+            font-weight: 700;
+        }
 
         .badge-categoria {
-            display: inline-block; padding: 2px 8px; border-radius: 10px;
-            font-size: 10px; font-weight: 700; background: #f3e8ff;
-            color: var(--primary); border: 1px solid rgba(109, 40, 217, 0.15);
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            background: #f3e8ff;
+            color: var(--primary);
+            border: 1px solid rgba(109, 40, 217, 0.15);
         }
 
         select.form-select {
@@ -269,27 +448,48 @@
             padding-right: 32px;
         }
 
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
 
         .loading-overlay {
-            position: fixed; inset: 0;
+            position: fixed;
+            inset: 0;
             background: rgba(255, 255, 255, 0.8);
-            display: none; align-items: center; justify-content: center;
+            display: none;
+            align-items: center;
+            justify-content: center;
             z-index: 99999;
         }
 
-        .loading-overlay.active { display: flex; }
+        .loading-overlay.active {
+            display: flex;
+        }
 
         @media (max-width: 639px) {
-            #produtosTable th, #produtosTable td {
+
+            #produtosTable th,
+            #produtosTable td {
                 font-size: 9px !important;
                 padding: 3px 2px !important;
                 line-height: 1.2 !important;
             }
 
-            #produtosTable td img { width: 22px !important; height: 22px !important; }
+            #produtosTable td img {
+                width: 22px !important;
+                height: 22px !important;
+            }
 
             .badge-estoque {
                 font-size: 8px !important;
@@ -303,22 +503,47 @@
                 padding: 1px 5px !important;
             }
 
-            .dataTables_wrapper .dataTables_filter input { max-width: 100% !important; }
-            .filtros-container { grid-template-columns: 1fr; }
+            .dataTables_wrapper .dataTables_filter input {
+                max-width: 100% !important;
+            }
 
-            .modal-content { max-width: 100%; border-radius: 12px; max-height: 98vh; }
-            .card-dashboard .value { font-size: 20px; }
-            .card-dashboard { padding: 12px; }
-            .card-dashboard .icon { width: 36px; height: 36px; font-size: 16px; }
+            .filtros-container {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                max-width: 100%;
+                border-radius: 12px;
+                max-height: 98vh;
+            }
+
+            .card-dashboard .value {
+                font-size: 20px;
+            }
+
+            .card-dashboard {
+                padding: 12px;
+            }
+
+            .card-dashboard .icon {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
         }
 
         @media (min-width: 640px) and (max-width: 1024px) {
-            #produtosTable th, #produtosTable td {
+
+            #produtosTable th,
+            #produtosTable td {
                 font-size: 10px !important;
                 padding: 4px 3px !important;
             }
 
-            #produtosTable td img { width: 30px !important; height: 30px !important; }
+            #produtosTable td img {
+                width: 30px !important;
+                height: 30px !important;
+            }
 
             .badge-estoque {
                 font-size: 9px !important;
@@ -326,16 +551,23 @@
                 min-width: 36px !important;
             }
 
-            .filtros-container { grid-template-columns: 1fr 1fr; }
+            .filtros-container {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         @media (min-width: 1025px) {
-            #produtosTable th, #produtosTable td {
+
+            #produtosTable th,
+            #produtosTable td {
                 font-size: 11px !important;
                 padding: 6px 5px !important;
             }
 
-            #produtosTable td img { width: 32px !important; height: 32px !important; }
+            #produtosTable td img {
+                width: 32px !important;
+                height: 32px !important;
+            }
 
             .badge-estoque {
                 font-size: 11px !important;
@@ -357,13 +589,19 @@
             border-bottom: 3px solid #f59e0b;
         }
 
-        #modalProduto .modal-content>div:first-child h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
+        #modalProduto .modal-content>div:first-child h3 {
+            font-size: 1.15rem;
+            letter-spacing: -0.01em;
+        }
 
         #modalProduto .modal-content>div:first-child h3 i {
             background: rgba(255, 255, 255, 0.2);
-            width: 34px; height: 34px;
+            width: 34px;
+            height: 34px;
             border-radius: 10px;
-            display: inline-flex; align-items: center; justify-content: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             font-size: 0.9rem;
         }
 
@@ -385,7 +623,9 @@
         .form-section::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
+            top: 0;
+            left: 0;
+            right: 0;
             height: 3px;
             background: linear-gradient(90deg, #6d28d9, #f59e0b);
             border-radius: 14px 14px 0 0;
@@ -393,21 +633,33 @@
             transition: opacity 0.3s;
         }
 
-        .form-section:hover::before { opacity: 1; }
+        .form-section:hover::before {
+            opacity: 1;
+        }
 
         .form-section-title {
-            display: flex; align-items: center; gap: 8px;
-            font-size: 11px; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 0.1em;
-            color: #4c1d95; margin-bottom: 14px; padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #4c1d95;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
             border-bottom: 1.5px dashed rgba(109, 40, 217, 0.15);
         }
 
         .form-section-title i {
-            width: 22px; height: 22px;
+            width: 22px;
+            height: 22px;
             background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
-            color: #6d28d9; border-radius: 7px;
-            display: inline-flex; align-items: center; justify-content: center;
+            color: #6d28d9;
+            border-radius: 7px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             font-size: 10px;
         }
 
@@ -417,16 +669,25 @@
             gap: 14px 16px;
         }
 
-        .form-section .grid .col-span-2 { grid-column: span 2; }
+        .form-section .grid .col-span-2 {
+            grid-column: span 2;
+        }
 
         @media (max-width: 640px) {
-            .form-section .grid { grid-template-columns: 1fr; gap: 12px; }
-            .form-section .grid .col-span-2 { grid-column: span 1; }
+            .form-section .grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .form-section .grid .col-span-2 {
+                grid-column: span 1;
+            }
         }
 
         #formProduto label {
             display: flex !important;
-            align-items: center; gap: 4px;
+            align-items: center;
+            gap: 4px;
             font-size: 11px !important;
             font-weight: 700 !important;
             color: #4c1d95 !important;
@@ -460,7 +721,10 @@
             box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.12) !important;
         }
 
-        #formProduto input::placeholder { color: #b8b0c8 !important; font-weight: 400; }
+        #formProduto input::placeholder {
+            color: #b8b0c8 !important;
+            font-weight: 400;
+        }
 
         #formProduto input[readonly] {
             background: #f5f1fc !important;
@@ -480,7 +744,10 @@
         }
 
         #formProduto .field-hint strong,
-        #formProduto small strong { color: #6d28d9 !important; font-weight: 700; }
+        #formProduto small strong {
+            color: #6d28d9 !important;
+            font-weight: 700;
+        }
 
         #formProduto .campo-categoria {
             display: flex !important;
@@ -489,7 +756,10 @@
             align-items: stretch;
         }
 
-        #formProduto .campo-categoria input { flex: 1; min-width: 0; }
+        #formProduto .campo-categoria input {
+            flex: 1;
+            min-width: 0;
+        }
 
         #formProduto .campo-categoria button {
             background: linear-gradient(135deg, #6d28d9, #4c1d95) !important;
@@ -513,7 +783,9 @@
         }
 
         #formProduto .checkbox-group {
-            display: flex; gap: 20px; flex-wrap: wrap;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
             padding: 14px 16px;
             background: linear-gradient(135deg, #faf5ff, #f3e8ff);
             border-radius: 12px;
@@ -522,7 +794,8 @@
 
         #formProduto .checkbox-group label {
             display: flex !important;
-            align-items: center; gap: 8px;
+            align-items: center;
+            gap: 8px;
             cursor: pointer;
             text-transform: none !important;
             font-size: 13px !important;
@@ -545,30 +818,58 @@
             border-radius: 12px;
             padding: 12px;
             background: #faf8ff;
-            display: flex; align-items: center; gap: 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
             transition: all 0.2s ease;
             min-height: 80px;
         }
 
-        .image-preview-box.has-image { border-style: solid; border-color: #6d28d9; background: #ffffff; }
-
-        .image-preview-box img {
-            width: 70px; height: 70px;
-            border-radius: 10px; object-fit: cover;
-            border: 1px solid rgba(109, 40, 217, 0.15);
-            flex-shrink: 0; background: #fff;
+        .image-preview-box.has-image {
+            border-style: solid;
+            border-color: #6d28d9;
+            background: #ffffff;
         }
 
-        .image-preview-box .preview-info { flex: 1; min-width: 0; }
-        .image-preview-box .preview-info p { margin: 0; font-size: 11px; color: #7d7a8a; line-height: 1.4; }
-        .image-preview-box .preview-info .preview-title { font-size: 12px; font-weight: 700; color: #4c1d95; margin-bottom: 2px; }
+        .image-preview-box img {
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid rgba(109, 40, 217, 0.15);
+            flex-shrink: 0;
+            background: #fff;
+        }
+
+        .image-preview-box .preview-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .image-preview-box .preview-info p {
+            margin: 0;
+            font-size: 11px;
+            color: #7d7a8a;
+            line-height: 1.4;
+        }
+
+        .image-preview-box .preview-info .preview-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #4c1d95;
+            margin-bottom: 2px;
+        }
 
         #modalProduto .modal-footer {
             background: #ffffff;
             border-top: 2px solid rgba(109, 40, 217, 0.08);
             padding: 16px 28px;
-            display: flex; gap: 10px; justify-content: flex-end;
-            position: sticky; bottom: 0; z-index: 5;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            position: sticky;
+            bottom: 0;
+            z-index: 5;
         }
 
         #modalProduto .modal-footer button {
@@ -608,12 +909,17 @@
         }
 
         #formProduto .id-auto {
-            display: inline-flex; align-items: center; gap: 5px;
-            font-size: 10px; font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10px;
+            font-weight: 700;
             color: #6d28d9;
             background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
-            padding: 6px 12px; border-radius: 8px;
-            text-transform: uppercase; letter-spacing: 0.05em;
+            padding: 6px 12px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             white-space: nowrap;
             border: 1px solid rgba(109, 40, 217, 0.15);
         }
@@ -632,8 +938,14 @@
             flex-direction: column !important;
         }
 
-        #modalManutencao .modal-content>div:first-child { flex-shrink: 0 !important; }
-        #modalManutencao .modal-content>div:nth-child(2) { flex: 1 !important; overflow-y: auto !important; }
+        #modalManutencao .modal-content>div:first-child {
+            flex-shrink: 0 !important;
+        }
+
+        #modalManutencao .modal-content>div:nth-child(2) {
+            flex: 1 !important;
+            overflow-y: auto !important;
+        }
 
         .btn-manutencao {
             background-color: #ea580c !important;
@@ -673,28 +985,74 @@
 
         .btn-acao:hover {
             transform: translateY(-1px);
-            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
         }
 
-        .btn-acao:active { transform: translateY(0); }
-        .btn-acao:disabled { opacity: 0.5; cursor: wait; }
+        .btn-acao:active {
+            transform: translateY(0);
+        }
 
-        .btn-acao.btn-repor { background: #dcfce7; color: #166534; border-color: #86efac; }
-        .btn-acao.btn-repor:hover { background: #bbf7d0; }
+        .btn-acao:disabled {
+            opacity: 0.5;
+            cursor: wait;
+        }
 
-        .btn-acao.btn-editar { background: #dbeafe; color: #1e40af; border-color: #93c5fd; }
-        .btn-acao.btn-editar:hover { background: #bfdbfe; }
+        .btn-acao.btn-repor {
+            background: #dcfce7;
+            color: #166534;
+            border-color: #86efac;
+        }
 
-        .btn-acao.btn-ocultar { background: #fef3c7; color: #92400e; border-color: #fcd34d; }
-        .btn-acao.btn-ocultar:hover { background: #fde68a; }
+        .btn-acao.btn-repor:hover {
+            background: #bbf7d0;
+        }
 
-        .btn-acao.btn-ocultar.esta-oculto { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+        .btn-acao.btn-editar {
+            background: #dbeafe;
+            color: #1e40af;
+            border-color: #93c5fd;
+        }
 
-        .btn-acao.btn-esgotar { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
-        .btn-acao.btn-esgotar:hover { background: #fecaca; }
+        .btn-acao.btn-editar:hover {
+            background: #bfdbfe;
+        }
 
-        .btn-acao.btn-excluir { background: #f3f4f6; color: #dc2626; border-color: #e5e7eb; }
-        .btn-acao.btn-excluir:hover { background: #fee2e2; border-color: #f87171; }
+        .btn-acao.btn-ocultar {
+            background: #fef3c7;
+            color: #92400e;
+            border-color: #fcd34d;
+        }
+
+        .btn-acao.btn-ocultar:hover {
+            background: #fde68a;
+        }
+
+        .btn-acao.btn-ocultar.esta-oculto {
+            background: #fee2e2;
+            color: #991b1b;
+            border-color: #fca5a5;
+        }
+
+        .btn-acao.btn-esgotar {
+            background: #fee2e2;
+            color: #991b1b;
+            border-color: #fca5a5;
+        }
+
+        .btn-acao.btn-esgotar:hover {
+            background: #fecaca;
+        }
+
+        .btn-acao.btn-excluir {
+            background: #f3f4f6;
+            color: #dc2626;
+            border-color: #e5e7eb;
+        }
+
+        .btn-acao.btn-excluir:hover {
+            background: #fee2e2;
+            border-color: #f87171;
+        }
 
         /* MODAL REPOR */
         #modalRepor .modal-content {
@@ -723,7 +1081,10 @@
             gap: 8px;
         }
 
-        #modalRepor .modal-body-repor { padding: 22px; background: #faf8ff; }
+        #modalRepor .modal-body-repor {
+            padding: 22px;
+            background: #faf8ff;
+        }
 
         #modalRepor .produto-info {
             background: #ffffff;
@@ -759,7 +1120,11 @@
             letter-spacing: 0.05em;
         }
 
-        #modalRepor .estoque-atual .valor { font-size: 20px; font-weight: 800; color: #6d28d9; }
+        #modalRepor .estoque-atual .valor {
+            font-size: 20px;
+            font-weight: 800;
+            color: #6d28d9;
+        }
 
         #modalRepor .atalhos-qtd {
             display: grid;
@@ -788,7 +1153,11 @@
             transform: translateY(-1px);
         }
 
-        #modalRepor .campo-qtd-custom { display: flex; gap: 8px; align-items: center; }
+        #modalRepor .campo-qtd-custom {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
 
         #modalRepor .campo-qtd-custom label {
             font-size: 11px;
@@ -830,7 +1199,10 @@
             text-align: center;
         }
 
-        #modalRepor .preview-novo strong { font-size: 15px; color: #1e40af; }
+        #modalRepor .preview-novo strong {
+            font-size: 15px;
+            color: #1e40af;
+        }
 
         #modalRepor .modal-footer-repor {
             background: #ffffff;
@@ -859,6 +1231,7 @@
             color: #6d6d7d;
             border: 1.5px solid #ece9f5 !important;
         }
+
         #modalRepor .btn-cancelar-repor:hover {
             background: #faf5ff;
             color: #6d28d9;
@@ -871,10 +1244,12 @@
             box-shadow: 0 6px 18px rgba(109, 40, 217, 0.3);
             min-width: 140px;
         }
+
         #modalRepor .btn-confirmar-repor:hover {
             transform: translateY(-1px);
             box-shadow: 0 10px 24px rgba(109, 40, 217, 0.4);
         }
+
         #modalRepor .btn-confirmar-repor:disabled {
             opacity: 0.6;
             cursor: wait;
@@ -882,9 +1257,19 @@
         }
 
         @media (max-width: 640px) {
-            .acoes-rapidas { gap: 2px; }
-            .btn-acao { width: 24px; height: 24px; font-size: 10px; }
-            #modalRepor .atalhos-qtd { grid-template-columns: repeat(2, 1fr); }
+            .acoes-rapidas {
+                gap: 2px;
+            }
+
+            .btn-acao {
+                width: 24px;
+                height: 24px;
+                font-size: 10px;
+            }
+
+            #modalRepor .atalhos-qtd {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         /* CARDS DE PRODUTOS */
@@ -939,7 +1324,9 @@
             white-space: nowrap;
         }
 
-        .cards-filtros-topo .filtro-limpar:hover { background: #d1d5db; }
+        .cards-filtros-topo .filtro-limpar:hover {
+            background: #d1d5db;
+        }
 
         #produtos-cards-container {
             display: grid;
@@ -963,7 +1350,12 @@
                 gap: 8px;
                 padding: 8px;
             }
-            .cards-filtros-topo { padding: 10px; gap: 6px; }
+
+            .cards-filtros-topo {
+                padding: 10px;
+                gap: 6px;
+            }
+
             .cards-filtros-topo .filtro-input,
             .cards-filtros-topo select.filtro-input {
                 font-size: 12px;
@@ -1008,7 +1400,9 @@
             transition: transform 0.4s ease;
         }
 
-        .produto-card:hover .card-imagem { transform: scale(1.06); }
+        .produto-card:hover .card-imagem {
+            transform: scale(1.06);
+        }
 
         .card-badges-status {
             position: absolute;
@@ -1046,7 +1440,12 @@
             gap: 6px;
         }
 
-        .card-categoria-titulo { font-size: 12px; color: #6b7280; font-weight: 500; line-height: 1.3; }
+        .card-categoria-titulo {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 500;
+            line-height: 1.3;
+        }
 
         .card-nome {
             font-size: 13px;
@@ -1098,14 +1497,20 @@
             border-color: #fbbf24;
             animation: pulse-stock 1.5s ease-in-out infinite;
         }
-        .card-estoque-badge.baixo .dot { background: #ca8a04; }
+
+        .card-estoque-badge.baixo .dot {
+            background: #ca8a04;
+        }
 
         .card-estoque-badge.esgotado {
             background: #fee2e2;
             color: #991b1b;
             border-color: #f87171;
         }
-        .card-estoque-badge.esgotado .dot { background: #dc2626; }
+
+        .card-estoque-badge.esgotado .dot {
+            background: #dc2626;
+        }
 
         .card-acoes {
             padding: 10px 14px;
@@ -1124,14 +1529,45 @@
         }
 
         @media (max-width: 640px) {
-            .card-body { padding: 9px 10px; gap: 5px; }
-            .card-nome { font-size: 11px; min-height: 28px; }
-            .card-categoria-titulo { font-size: 10px; }
-            .card-preco { font-size: 16px; }
-            .card-estoque-badge { font-size: 9px; padding: 3px 8px; }
-            .card-badge-status { width: 22px; height: 22px; font-size: 9px; }
-            .card-acoes { grid-template-columns: repeat(3, 1fr); padding: 8px; gap: 3px; }
-            .card-acoes .btn-acao { height: 28px; font-size: 10px; }
+            .card-body {
+                padding: 9px 10px;
+                gap: 5px;
+            }
+
+            .card-nome {
+                font-size: 11px;
+                min-height: 28px;
+            }
+
+            .card-categoria-titulo {
+                font-size: 10px;
+            }
+
+            .card-preco {
+                font-size: 16px;
+            }
+
+            .card-estoque-badge {
+                font-size: 9px;
+                padding: 3px 8px;
+            }
+
+            .card-badge-status {
+                width: 22px;
+                height: 22px;
+                font-size: 9px;
+            }
+
+            .card-acoes {
+                grid-template-columns: repeat(3, 1fr);
+                padding: 8px;
+                gap: 3px;
+            }
+
+            .card-acoes .btn-acao {
+                height: 28px;
+                font-size: 10px;
+            }
         }
     </style>
 </head>
@@ -1225,7 +1661,8 @@
         </div>
 
         <!-- BOTÕES DE AÇÃO -->
-        <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 bg-white p-3 rounded-2xl shadow-sm border">
+        <div
+            class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 bg-white p-3 rounded-2xl shadow-sm border">
             <div class="flex items-center gap-2 text-gray-700 text-sm font-medium">
                 <i class="fas fa-cog text-primary"></i>
                 <span class="hidden xs:inline">Gerenciar</span>
@@ -1235,7 +1672,8 @@
                     onmouseover="this.style.backgroundColor='#4c1d95'" onmouseout="this.style.backgroundColor='#6d28d9'"
                     class="px-4 py-2 rounded-xl font-bold text-xs shadow transition flex items-center gap-1 justify-center"
                     title="Adicionar Novo Produto">
-                    <i class="fas fa-plus-circle" style="font-size: 14px;"></i> <span class="hidden sm:inline">Produto</span>
+                    <i class="fas fa-plus-circle" style="font-size: 14px;"></i> <span
+                        class="hidden sm:inline">Produto</span>
                 </button>
 
                 <button onclick="abrirModal('modalUsuarios')" style="background-color: #4f46e5; color: #ffffff;"
@@ -1249,28 +1687,32 @@
                     onmouseover="this.style.backgroundColor='#1f2937'" onmouseout="this.style.backgroundColor='#374151'"
                     class="px-3 py-2 rounded-xl font-bold text-xs shadow transition flex items-center gap-1 justify-center"
                     title="Configurações do Site">
-                    <i class="fas fa-sliders-h" style="font-size: 14px;"></i> <span class="hidden sm:inline">Config</span>
+                    <i class="fas fa-sliders-h" style="font-size: 14px;"></i> <span
+                        class="hidden sm:inline">Config</span>
                 </button>
 
                 <button onclick="abrirModal('modalMarquee')" style="background-color: #eab308; color: #ffffff;"
                     onmouseover="this.style.backgroundColor='#ca8a04'" onmouseout="this.style.backgroundColor='#eab308'"
                     class="px-3 py-2 rounded-xl font-bold text-xs shadow transition flex items-center gap-1 justify-center"
                     title="Frases do Marquee">
-                    <i class="fas fa-bullhorn" style="font-size: 14px;"></i> <span class="hidden sm:inline">Marquee</span>
+                    <i class="fas fa-bullhorn" style="font-size: 14px;"></i> <span
+                        class="hidden sm:inline">Marquee</span>
                 </button>
 
                 <button onclick="abrirModal('modalVendas')" style="background-color: #2563eb; color: #ffffff;"
                     onmouseover="this.style.backgroundColor='#1d4ed8'" onmouseout="this.style.backgroundColor='#2563eb'"
                     class="px-3 py-2 rounded-xl font-bold text-xs shadow transition flex items-center gap-1 justify-center"
                     title="Relatório de Vendas">
-                    <i class="fas fa-chart-line" style="font-size: 14px;"></i> <span class="hidden sm:inline">Vendas</span>
+                    <i class="fas fa-chart-line" style="font-size: 14px;"></i> <span
+                        class="hidden sm:inline">Vendas</span>
                 </button>
 
                 <button onclick="abrirModal('modalManutencao')" style="background-color: #ea580c; color: #ffffff;"
                     onmouseover="this.style.backgroundColor='#c2410c'" onmouseout="this.style.backgroundColor='#ea580c'"
                     class="px-3 py-2 rounded-xl font-bold text-xs shadow transition flex items-center gap-1 justify-center"
                     title="Modo Manutenção">
-                    <i class="fas fa-tools" style="font-size: 14px;"></i> <span class="hidden sm:inline">Manutenção</span>
+                    <i class="fas fa-tools" style="font-size: 14px;"></i> <span
+                        class="hidden sm:inline">Manutenção</span>
                 </button>
             </div>
         </div>
@@ -1278,11 +1720,13 @@
         <!-- GRÁFICOS -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div class="bg-white rounded-2xl shadow-sm border p-4">
-                <h3 class="font-bold text-gray-700 text-sm mb-3"><i class="fas fa-chart-pie text-primary mr-2"></i>Produtos por Categoria</h3>
+                <h3 class="font-bold text-gray-700 text-sm mb-3"><i
+                        class="fas fa-chart-pie text-primary mr-2"></i>Produtos por Categoria</h3>
                 <div style="height: 200px;"><canvas id="chartCategorias"></canvas></div>
             </div>
             <div class="bg-white rounded-2xl shadow-sm border p-4">
-                <h3 class="font-bold text-gray-700 text-sm mb-3"><i class="fas fa-chart-bar text-primary mr-2"></i>Top 5 Estoque</h3>
+                <h3 class="font-bold text-gray-700 text-sm mb-3"><i class="fas fa-chart-bar text-primary mr-2"></i>Top 5
+                    Estoque</h3>
                 <div style="height: 200px;"><canvas id="chartEstoque"></canvas></div>
             </div>
         </div>
@@ -1337,8 +1781,7 @@
             <!-- 🎴 VISUALIZAÇÃO EM CARDS -->
             <div id="produtos-cards-view" class="hidden">
                 <div class="cards-filtros-topo">
-                    <input type="text" id="cards-filtro-busca" class="filtro-input" 
-                        placeholder="🔍 Buscar por nome...">
+                    <input type="text" id="cards-filtro-busca" class="filtro-input" placeholder="🔍 Buscar por nome...">
                     <select id="cards-filtro-categoria" class="filtro-input">
                         <option value="">Todas as categorias</option>
                     </select>
@@ -1418,7 +1861,24 @@
                             </div>
                             <div class="col-span-2">
                                 <label>Nome do Produto *</label>
-                                <input type="text" id="Nome do Produto" required placeholder="Ex: Lavanda Francesa 120ml">
+                                <input type="text" id="Nome do Produto" required
+                                    placeholder="Ex: Lavanda Francesa 120ml">
+                            </div>
+                        </div>
+
+                        <div class="col-span-2">
+                            <label>Subcategoria / Família Olfativa</label>
+                            <select id="Subcategoria" class="form-select">
+                                <option value="">Selecione (opcional)</option>
+                            </select>
+                            <small class="field-hint">
+                                Ex: <strong>Cascas e Folhas</strong>, <strong>Lavanda</strong>, <strong>Floral</strong>
+                            </small>
+                            <div class="campo-categoria">
+                                <input type="text" id="novaSubcategoria" placeholder="Nova subcategoria...">
+                                <button type="button" id="btnNovaSubcategoria">
+                                    <i class="fas fa-plus"></i> Adicionar
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1454,7 +1914,8 @@
                             <div class="col-span-2">
                                 <label>Quantidades Sugeridas</label>
                                 <input type="text" id="Quantidade" placeholder="Ex: 1,2,3,5,10">
-                                <small class="field-hint">Aparecem como <strong>botões de atalho</strong> ao adicionar ao carrinho</small>
+                                <small class="field-hint">Aparecem como <strong>botões de atalho</strong> ao adicionar
+                                    ao carrinho</small>
                             </div>
                         </div>
                     </div>
@@ -1478,7 +1939,8 @@
                             <div>
                                 <label>Saldo Estoque *</label>
                                 <input type="number" id="Saldo Estoque" required placeholder="0" value="0">
-                                <small class="field-hint">Deixe <strong>igual ao Estoque</strong> para novo produto</small>
+                                <small class="field-hint">Deixe <strong>igual ao Estoque</strong> para novo
+                                    produto</small>
                             </div>
                         </div>
                     </div>
@@ -1492,7 +1954,8 @@
                             <div class="col-span-2">
                                 <label>URL do Google Drive</label>
                                 <input type="text" id="Imagem" placeholder="https://drive.google.com/file/d/...">
-                                <small class="field-hint">Certifique-se de que a imagem está <strong>pública</strong> no Drive</small>
+                                <small class="field-hint">Certifique-se de que a imagem está <strong>pública</strong> no
+                                    Drive</small>
                                 <div class="image-preview-box" id="imagePreviewBox">
                                     <img id="imagePreviewImg" src="" alt="Preview" style="display:none;">
                                     <div class="preview-info">
@@ -1540,7 +2003,8 @@
                 <h3 class="text-lg font-bold flex items-center gap-2">
                     <i class="fas fa-users"></i> Gerenciar Usuários
                 </h3>
-                <button onclick="fecharModal('modalUsuarios')" class="text-white/80 hover:text-white text-xl transition">
+                <button onclick="fecharModal('modalUsuarios')"
+                    class="text-white/80 hover:text-white text-xl transition">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -1623,7 +2087,8 @@
                 <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
                     <p class="text-xs text-blue-800">
                         <i class="fas fa-info-circle mr-1"></i>
-                        Essas configurações aparecem automaticamente no site público (botão WhatsApp, footer, frete, etc).
+                        Essas configurações aparecem automaticamente no site público (botão WhatsApp, footer, frete,
+                        etc).
                     </p>
                 </div>
 
@@ -1634,11 +2099,13 @@
                         </h4>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Número (só dígitos) *</label>
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Número (só dígitos)
+                            *</label>
                         <input type="text" id="cfgWhatsapp" required
                             class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary outline-none text-sm font-mono"
                             placeholder="5588999049636">
-                        <small class="field-hint">Formato: <strong>55</strong> + DDD + número. Ex: <code>5588999049636</code></small>
+                        <small class="field-hint">Formato: <strong>55</strong> + DDD + número. Ex:
+                            <code>5588999049636</code></small>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Exibição *</label>
@@ -1690,7 +2157,8 @@
                             placeholder="Juazeiro do Norte, CE">
                     </div>
                     <div class="col-span-full">
-                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Texto "Sobre" (footer)</label>
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Texto "Sobre"
+                            (footer)</label>
                         <textarea id="cfgSobreTexto" rows="3"
                             class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary outline-none text-sm"
                             placeholder="A WR Aromatizantes nasceu para levar o cheirinho mais querido do Brasil..."></textarea>
@@ -1703,7 +2171,8 @@
                         </h4>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Frete Grátis acima de (R$) *</label>
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Frete Grátis acima de (R$)
+                            *</label>
                         <input type="number" step="0.01" id="cfgFreteGratis" required
                             class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary outline-none text-sm"
                             placeholder="100">
@@ -1810,7 +2279,8 @@
     <div id="modalVendas" class="modal-overlay">
         <div class="modal-content modal-content-vendas" onclick="event.stopPropagation()">
             <div class="bg-blue-600 px-4 py-3 flex justify-between items-center text-white sticky top-0 z-10">
-                <h3 class="text-lg font-bold flex items-center gap-2"><i class="fas fa-chart-line"></i>Relatório de Vendas</h3>
+                <h3 class="text-lg font-bold flex items-center gap-2"><i class="fas fa-chart-line"></i>Relatório de
+                    Vendas</h3>
                 <button onclick="fecharModal('modalVendas')" class="text-white/80 hover:text-white text-xl transition">
                     <i class="fas fa-times"></i>
                 </button>
@@ -1822,7 +2292,9 @@
                     <div><label>Mês / Ano</label><input type="month" id="filtro-mes"></div>
                     <div>
                         <label>Cliente</label>
-                        <select id="filtro-cliente"><option value="">Todos os clientes</option></select>
+                        <select id="filtro-cliente">
+                            <option value="">Todos os clientes</option>
+                        </select>
                     </div>
                     <div>
                         <label>Status</label>
@@ -1887,15 +2359,33 @@
                     <table class="w-full text-xs vendas-table" id="vendasTable">
                         <thead>
                             <tr>
-                                <th class="text-left py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">#</th>
-                                <th class="text-left py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">Data</th>
-                                <th class="text-left py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">Cliente</th>
-                                <th class="text-left py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">Endereço</th>
-                                <th class="text-left py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">Itens</th>
-                                <th class="text-right py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">Subtotal</th>
-                                <th class="text-right py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">Frete</th>
-                                <th class="text-right py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">Total</th>
-                                <th class="text-center py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">Status</th>
+                                <th
+                                    class="text-left py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">
+                                    #</th>
+                                <th
+                                    class="text-left py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">
+                                    Data</th>
+                                <th
+                                    class="text-left py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">
+                                    Cliente</th>
+                                <th
+                                    class="text-left py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">
+                                    Endereço</th>
+                                <th
+                                    class="text-left py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">
+                                    Itens</th>
+                                <th
+                                    class="text-right py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">
+                                    Subtotal</th>
+                                <th
+                                    class="text-right py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">
+                                    Frete</th>
+                                <th
+                                    class="text-right py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">
+                                    Total</th>
+                                <th
+                                    class="text-center py-2 px-2 text-[10px] font-bold text-primary uppercase tracking-wider">
+                                    Status</th>
                             </tr>
                         </thead>
                         <tbody id="vendas-tbody">
@@ -1943,7 +2433,8 @@
                 <div class="bg-orange-50 border border-orange-200 rounded-xl p-3 mb-5">
                     <p class="text-xs text-orange-800">
                         <i class="fas fa-info-circle mr-1"></i>
-                        Quando <strong>ativada</strong>, os visitantes veem uma tela elegante de manutenção. Você (admin) continua com acesso normal.
+                        Quando <strong>ativada</strong>, os visitantes veem uma tela elegante de manutenção. Você
+                        (admin) continua com acesso normal.
                     </p>
                 </div>
 
@@ -2009,7 +2500,8 @@
                 </div>
 
                 <div style="margin-bottom:14px;">
-                    <label style="display:block;font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">
+                    <label
+                        style="display:block;font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">
                         Adicionar quantidade
                     </label>
                     <div class="atalhos-qtd">
@@ -2049,12 +2541,36 @@
 
         const SVG_PLACEHOLDER = `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" fill="%23f3f4f6"/%3E%3Ctext x="50" y="50" font-family="Arial" font-size="10" text-anchor="middle" dy=".3em" fill="%239ca3af"%3ESem Imagem%3C/text%3E%3C/svg%3E`;
 
-        const CATEGORIAS_OFICIAIS = [
-            "Spray 120ml",
+        // ============================================
+        // CATEGORIAS E SUBCATEGORIAS
+        // ============================================
+        const CATEGORIAS_PRODUTO = [
             "Spray 500ml",
+            "Spray 120ml",
             "Refil 1L",
-            "Linha Automotiva"
+            "Linha Automotiva",
+            "Perfumaria",
+            "Kit Presente"
         ];
+
+        let SUBCATEGORIAS_FRAGRANCIA = JSON.parse(localStorage.getItem('wr_subcats') || 'null') || [
+            "Cascas e Folhas",
+            "Lavanda",
+            "Citrus",
+            "Floral",
+            "Amadeirado",
+            "Frutado",
+            "Fresco",
+            "Doce",
+            "Herbal",
+            "Oriental",
+            "Automotivo",
+            "Perfumaria"
+        ];
+
+        function salvarSubcats() {
+            localStorage.setItem('wr_subcats', JSON.stringify(SUBCATEGORIAS_FRAGRANCIA));
+        }
 
         let produtos = [];
         let marqueeItems = [];
@@ -2311,11 +2827,13 @@
                         params += `&preco=${p.Preço || p.preco || 0}`;
                         params += `&quantidade=${encodeURIComponent(p.Quantidade || p.quantidade || '')}`;
                         params += `&categoria=${encodeURIComponent(p.Categoria || p.categoria || '')}`;
+                        params += `&subcategoria=${encodeURIComponent(p.Subcategoria || p.subcategoria || '')}`; // 🆕
                         params += `&imagem=${encodeURIComponent(p.Imagem || p.imagem || '')}`;
                         params += `&disponivel=${p.Disponível || p.disponivel || 'sim'}`;
                         params += `&estoque=${p.Estoque || p.estoque || 0}`;
                         params += `&saldo_estoque=${p["Saldo Estoque"] || p.saldo_estoque || 0}`;
                         if (p.ID) params += `&id=${p.ID}`;
+
                     } else if (tipo === 'excluir') {
                         params += `&id=${dados.id || ''}`;
                     } else if (tipo === 'salvar_categoria') {
@@ -2382,7 +2900,7 @@
             if (!select) return;
             select.innerHTML = '<option value="">Selecione uma categoria</option>';
             categoriasCache = [];
-            CATEGORIAS_OFICIAIS.forEach(cat => {
+            CATEGORIAS_PRODUTO.forEach(cat => {  // 🔄 era CATEGORIAS_OFICIAIS
                 const option = document.createElement('option');
                 option.value = cat;
                 option.textContent = cat;
@@ -2392,7 +2910,19 @@
             const totalEl = document.getElementById('total-categorias');
             if (totalEl) totalEl.innerText = categoriasCache.length;
         }
-
+        function carregarSubcategoriasFixas() {
+            const select = document.getElementById('Subcategoria');
+            if (!select) return;
+            const valorAtual = select.value;
+            select.innerHTML = '<option value="">Selecione (opcional)</option>';
+            SUBCATEGORIAS_FRAGRANCIA.sort().forEach(sub => {
+                const opt = document.createElement('option');
+                opt.value = sub;
+                opt.textContent = sub;
+                select.appendChild(opt);
+            });
+            if (SUBCATEGORIAS_FRAGRANCIA.includes(valorAtual)) select.value = valorAtual;
+        }
         // ============================================
         // CONFIGURAÇÕES
         // ============================================
@@ -2504,11 +3034,14 @@
                         Preço: p.Preço || p.preco,
                         Quantidade: p.Quantidade || p.quantidade,
                         Categoria: p.Categoria || p.categoria,
+                        Subcategoria: p.Subcategoria || p.subcategoria || '',  // 🆕
                         Imagem: p.Imagem || p.imagem,
                         Disponível: String(p.Disponível || p.disponivel || '').toLowerCase().trim(),
                         Estoque: p.Estoque || p.estoque || 0,
                         Vendidos: p.Vendidos || p.vendidos || 0,
                         "Saldo Estoque": p["Saldo Estoque"] || p.saldo_estoque || 0
+
+
                     }));
                 } else {
                     produtos = [];
@@ -3140,10 +3673,12 @@
                 document.getElementById('Estoque').value = 0;
                 document.getElementById('Saldo Estoque').value = 0;
                 carregarCategoriasFixas();
+                carregarSubcategoriasFixas();   // 🆕 JÁ EXISTE, mantém
                 document.getElementById('modalProduto').classList.add('active');
                 document.body.style.overflow = 'hidden';
                 setTimeout(atualizarPreviewImagem, 100);
-                
+
+
             } else if (tipo === 'modalVendas') {
                 document.getElementById('modalVendas').classList.add('active');
                 document.body.style.overflow = 'hidden';
@@ -3230,6 +3765,7 @@
             const preco = document.getElementById('Preço').value.replace(',', '.');
             const quantidade = document.getElementById('Quantidade').value.trim();
             const categoria = document.getElementById('Categoria').value;
+            const subcategoria = document.getElementById('Subcategoria').value; // 🆕 DECLARADO
             const imagem = document.getElementById('Imagem').value.trim();
             const disponivel = document.getElementById('Disponível').checked ? 'sim' : 'nao';
             const estoque = parseInt(document.getElementById('Estoque').value) || 0;
@@ -3245,12 +3781,14 @@
                 Preço: parseFloat(preco) || 0,
                 Quantidade: quantidade,
                 Categoria: categoria,
+                Subcategoria: subcategoria,   // 🆕
                 Imagem: imagem,
                 Disponível: disponivel,
                 Estoque: estoque,
                 "Saldo Estoque": saldoEstoque,
                 Vendidos: 0
             };
+
 
             const tipo = idEdicao ? "atualizar" : "cadastrar";
             const btnSalvar = document.querySelector('#modalProduto .btn-save-produto');
@@ -3294,6 +3832,7 @@
         function editarProduto(id) {
             const p = produtos.find(prod => String(prod.ID) === String(id));
             if (!p) { alert('Produto não encontrado!'); return; }
+
             document.getElementById('modalProdutoTitle').innerText = "✏️ Editar Produto";
             document.getElementById('editID').value = p.ID;
             document.getElementById('ID').value = p.ID;
@@ -3305,6 +3844,11 @@
             document.getElementById('Saldo Estoque').value = p["Saldo Estoque"] || 0;
             document.getElementById('Disponível').checked = String(p.Disponível || '').toLowerCase().trim() === 'sim';
 
+            // 🆕 Recarrega subcategorias e categorias ANTES de setar valores
+            carregarCategoriasFixas();
+            carregarSubcategoriasFixas();
+
+            // Seta categoria
             const selectCat = document.getElementById('Categoria');
             if (p.Categoria) {
                 let exists = false;
@@ -3320,12 +3864,30 @@
                 selectCat.value = p.Categoria;
             }
 
+            // Seta subcategoria
+            const selectSub = document.getElementById('Subcategoria');
+            if (p.Subcategoria) {
+                let existsSub = false;
+                for (let i = 0; i < selectSub.options.length; i++) {
+                    if (selectSub.options[i].value === p.Subcategoria) { existsSub = true; break; }
+                }
+                if (!existsSub) {
+                    const option = document.createElement('option');
+                    option.value = p.Subcategoria;
+                    option.textContent = p.Subcategoria;
+                    selectSub.appendChild(option);
+                }
+                selectSub.value = p.Subcategoria;
+            }
+
             document.getElementById('modalProduto').classList.add('active');
             document.body.style.overflow = 'hidden';
 
             setTimeout(atualizarPreviewImagem, 100);
         }
         window.editarProduto = editarProduto;
+
+
 
         // ============================================
         // EXCLUIR PRODUTO
@@ -3363,13 +3925,30 @@
                 document.body.style.overflow = 'auto';
             }
         });
-        
+
         document.getElementById('modalRepor')?.addEventListener('click', (e) => {
             if (e.target === document.getElementById('modalRepor')) {
                 fecharModal('modalRepor');
             }
         });
 
+
+        document.getElementById('btnNovaSubcategoria').addEventListener('click', function () {
+            const input = document.getElementById('novaSubcategoria');
+            const nome = input.value.trim();
+            if (!nome) { alert('Digite o nome da subcategoria'); return; }
+            if (SUBCATEGORIAS_FRAGRANCIA.includes(nome)) {
+                alert('Essa subcategoria já existe!');
+                input.value = '';
+                return;
+            }
+            SUBCATEGORIAS_FRAGRANCIA.push(nome);
+            salvarSubcats();
+            carregarSubcategoriasFixas();
+            document.getElementById('Subcategoria').value = nome;
+            input.value = '';
+            alert('✅ Subcategoria adicionada!');
+        });
         // ============================================
         // USUÁRIOS
         // ============================================
@@ -3574,7 +4153,7 @@
             setInterval(atualizarData, 60000);
 
             const catSelect = document.getElementById('Categoria');
-            if (catSelect) catSelect.addEventListener('change', () => {});
+            if (catSelect) catSelect.addEventListener('change', () => { });
 
             setTimeout(() => aplicarColunasVisiveis(), 500);
 
@@ -3871,11 +4450,11 @@
             }
 
             const confirmMsg = `⚠️ ATENÇÃO!\n\nVocê está prestes a ESGOTAR o produto:\n\n` +
-                               `"${p["Nome do Produto"]}"\n\n` +
-                               `Estoque atual: ${estoqueAtual} unidades\n\n` +
-                               `Isso vai marcar TODAS as ${estoqueAtual} unidades como VENDIDAS,\n` +
-                               `zerando o saldo disponível.\n\n` +
-                               `Deseja continuar?`;
+                `"${p["Nome do Produto"]}"\n\n` +
+                `Estoque atual: ${estoqueAtual} unidades\n\n` +
+                `Isso vai marcar TODAS as ${estoqueAtual} unidades como VENDIDAS,\n` +
+                `zerando o saldo disponível.\n\n` +
+                `Deseja continuar?`;
 
             if (!confirm(confirmMsg)) return;
 
@@ -3920,7 +4499,7 @@
                 tabelaView.classList.add('hidden');
                 if (btnIcone) btnIcone.className = 'fas fa-table';
                 if (btnTexto) btnTexto.textContent = 'Tabela';
-                
+
                 popularFiltroCategorias();
                 renderizarCardsProdutos();
             } else {
@@ -4081,11 +4660,11 @@
             const busca = document.getElementById('cards-filtro-busca');
             const categoria = document.getElementById('cards-filtro-categoria');
             const ordem = document.getElementById('cards-filtro-ordem');
-            
+
             if (busca) busca.value = '';
             if (categoria) categoria.value = '';
             if (ordem) ordem.value = 'relevancia';
-            
+
             renderizarCardsProdutos();
         }
 
@@ -4132,41 +4711,41 @@
 
 
         // ============================================
-// 🛡️ PROTEÇÃO CONTRA ELEMENTOS NULOS
-// ============================================
-(function protegerInnerText() {
-    // Sobrescreve o setter de innerText e innerHTML
-    // para ignorar erros quando o elemento é null
-    const descriptorInnerText = Object.getOwnPropertyDescriptor(Element.prototype, 'innerText');
-    if (descriptorInnerText && descriptorInnerText.set) {
-        Object.defineProperty(Element.prototype, 'innerText', {
-            set: function (val) {
-                try {
-                    descriptorInnerText.set.call(this, val);
-                } catch (e) {
-                    console.warn('⚠️ innerText ignorado em elemento inválido:', this);
-                }
-            },
-            get: descriptorInnerText.get,
-            configurable: true
-        });
-    }
+        // 🛡️ PROTEÇÃO CONTRA ELEMENTOS NULOS
+        // ============================================
+        (function protegerInnerText() {
+            // Sobrescreve o setter de innerText e innerHTML
+            // para ignorar erros quando o elemento é null
+            const descriptorInnerText = Object.getOwnPropertyDescriptor(Element.prototype, 'innerText');
+            if (descriptorInnerText && descriptorInnerText.set) {
+                Object.defineProperty(Element.prototype, 'innerText', {
+                    set: function (val) {
+                        try {
+                            descriptorInnerText.set.call(this, val);
+                        } catch (e) {
+                            console.warn('⚠️ innerText ignorado em elemento inválido:', this);
+                        }
+                    },
+                    get: descriptorInnerText.get,
+                    configurable: true
+                });
+            }
 
-    const descriptorInnerHTML = Object.getOwnPropertyDescriptor(Element.prototype, 'innerHTML');
-    if (descriptorInnerHTML && descriptorInnerHTML.set) {
-        Object.defineProperty(Element.prototype, 'innerHTML', {
-            set: function (val) {
-                try {
-                    descriptorInnerHTML.set.call(this, val);
-                } catch (e) {
-                    console.warn('⚠️ innerHTML ignorado em elemento inválido:', this);
-                }
-            },
-            get: descriptorInnerHTML.get,
-            configurable: true
-        });
-    }
-})();
+            const descriptorInnerHTML = Object.getOwnPropertyDescriptor(Element.prototype, 'innerHTML');
+            if (descriptorInnerHTML && descriptorInnerHTML.set) {
+                Object.defineProperty(Element.prototype, 'innerHTML', {
+                    set: function (val) {
+                        try {
+                            descriptorInnerHTML.set.call(this, val);
+                        } catch (e) {
+                            console.warn('⚠️ innerHTML ignorado em elemento inválido:', this);
+                        }
+                    },
+                    get: descriptorInnerHTML.get,
+                    configurable: true
+                });
+            }
+        })();
 
     </script>
 </body>
