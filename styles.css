@@ -1485,3 +1485,221 @@ header.glass::after {
 .zoom-controls button:active {
   transform: scale(0.95);
 }
+/* ========================================== */
+/* LABEL DE SEÇÃO DA SIDEBAR                   */
+/* ========================================== */
+.sidebar-section-label {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #9ca3af;
+    padding: 16px 12px 6px;
+    margin: 0;
+    border-top: 1px dashed rgba(109, 40, 217, 0.1);
+    margin-top: 8px;
+}
+
+.sidebar-section-label:first-of-t {
+    border-top: none;
+    margin-top: 0;
+}
+
+@media (max-width: 900px) {
+    .sidebar-section-label {
+        font-size: 11px;
+        padding: 20px 18px 8px;
+        color: var(--primary);
+        border-top: 2px solid rgba(109, 40, 217, 0.08);
+    }
+}
+
+/* 🔥 Última unidade — mais intenso */
+.stock-low.unidade-unica {
+  background: linear-gradient(135deg, #fecaca, #fca5a5);
+  color: #7f1d1d;
+  border: 1px solid #ef4444;
+  animation: pulse-stock 1s ease-in-out infinite;
+}
+
+/* ========================================== */
+/* LABEL DE SEÇÃO DA SIDEBAR                   */
+/* ========================================== */
+.sidebar-section-label {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #9ca3af;
+    padding: 16px 12px 6px;
+    margin: 0;
+    border-top: 1px dashed rgba(109, 40, 217, 0.1);
+    margin-top: 8px;
+}
+
+.sidebar-section-label:first-of-type {
+    border-top: none;
+    margin-top: 0;
+}
+
+@media (max-width: 900px) {
+    .sidebar-section-label {
+        font-size: 11px;
+        padding: 20px 18px 8px;
+        color: var(--primary);
+        border-top: 2px solid rgba(109, 40, 217, 0.08);
+    }
+}
+
+/* 🔥 Última unidade — destaque */
+.stock-low.unidade-unica {
+  background: linear-gradient(135deg, #fecaca, #fca5a5);
+  color: #7f1d1d;
+  border: 1px solid #ef4444;
+  animation: pulse-stock 1s ease-in-out infinite;
+}
+
+/* ========================================== */
+/* 🔥 ÚLTIMA UNIDADE (só estoque = 1)         */
+/* ========================================== */
+.stock-last {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #fecaca, #fca5a5);
+  color: #7f1d1d;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 800;
+  border: 1px solid #ef4444;
+  animation: pulse-last 1s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+}
+
+.stock-last i {
+  color: #dc2626;
+  animation: fire-shake 1s ease-in-out infinite;
+}
+
+@keyframes pulse-last {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  50% { transform: scale(1.05); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+}
+
+@keyframes fire-shake {
+  0%, 100% { transform: rotate(-5deg) scale(1); }
+  50% { transform: rotate(5deg) scale(1.15); }
+}
+/* ========================================== */
+/* LABEL DE SEÇÃO DA SIDEBAR                   */
+/* ========================================== */
+.sidebar-section-label {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #9ca3af;
+  padding: 16px 12px 6px;
+  margin: 0;
+  border-top: 1px dashed rgba(109, 40, 217, 0.1);
+  margin-top: 8px;
+}
+
+.sidebar-section-label:first-of-type {
+  border-top: none;
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .sidebar-section-label {
+    font-size: 11px;
+    padding: 20px 18px 8px;
+    color: var(--primary);
+    border-top: 2px solid rgba(109, 40, 217, 0.08);
+  }
+}
+
+/* 🔥 ÚLTIMA UNIDADE (estoque = 1) */
+.stock-last {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #fecaca, #fca5a5);
+  color: #7f1d1d;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 800;
+  border: 1px solid #ef4444;
+  animation: pulse-last 1s ease-in-out infinite;
+}
+
+.stock-last i {
+  color: #dc2626;
+  animation: fire-shake 1s ease-in-out infinite;
+}
+
+@keyframes pulse-last {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes fire-shake {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+/* ========================================== */
+/* CATÁLOGO VERTICAL (TÍTULO + SEPARADOR + SUB) */
+/* ========================================== */
+.catalogo-vertical {
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  line-height: 1.1 !important;
+  flex-shrink: 0;
+}
+
+.catalogo-vertical .catalogo-heading,
+.catalogo-vertical .catalogo-heading-mobile {
+  line-height: 1;
+}
+
+.catalogo-vertical .catalogo-separator,
+.catalogo-vertical .catalogo-separator-mobile {
+  font-size: 0.85rem;
+  line-height: 0.8;
+  opacity: 0.6;
+  margin: -2px 0;
+}
+
+.catalogo-vertical .catalogo-subheading,
+.catalogo-vertical .catalogo-subheading-mobile {
+  line-height: 1;
+  margin-top: 2px;
+}
+
+/* No desktop, permite que o bloco vertical fique ao lado da busca */
+@media (min-width: 769px) {
+  .catalogo-desktop-group {
+    gap: 20px;
+  }
+  .catalogo-vertical {
+    padding-right: 12px;
+    border-right: 1px solid rgba(109, 40, 217, 0.1);
+  }
+}
+/* 🔒 Garantir que o bloco mobile desapareça no desktop */
+@media (min-width: 769px) {
+  .catalogo-mobile {
+    display: none !important;
+  }
+}
+
+/* 🔒 Garantir que o bloco desktop desapareça no mobile */
+@media (max-width: 768px) {
+  .catalogo-desktop-group {
+    display: none !important;
+  }
+}
