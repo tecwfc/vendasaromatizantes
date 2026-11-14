@@ -78,7 +78,7 @@
     </div>
 
     <div class="flex-1 items-center justify-center gap-6 lg:gap-8 catalogo-desktop-group">
-      <div class="catalogo-inline">
+            <div class="catalogo-inline catalogo-vertical">
         <span class="catalogo-heading">
           <i class="fas fa-spray-can"></i> Catálogo
         </span>
@@ -93,12 +93,12 @@
       </div>
     </div>
 
-    <div class="flex-1 items-center justify-center catalogo-mobile">
+        <div class="flex-1 items-center justify-center catalogo-mobile catalogo-vertical">
       <span class="catalogo-heading-mobile">
         <i class="fas fa-spray-can"></i> Catálogo
       </span>
-      <span class="catalogo-separator-mobile">·</span>
-      <span class="catalogo-subheading-mobile">faça seu pedido</span>
+      <span class="catalogo-separator-mobile">—</span>
+      <span class="catalogo-subheading-mobile">o cheirinho mais querido do Brasil</span>
     </div>
 
     <div class="flex items-center gap-1 md:gap-3 shrink-0">
@@ -187,7 +187,7 @@
   <!-- LAYOUT PRINCIPAL COM SIDEBAR -->
   <div class="main-layout">
 
-    <!-- SIDEBAR DE CATEGORIAS -->
+        <!-- SIDEBAR DE CATEGORIAS -->
     <aside id="sidebar-categorias" class="sidebar-categorias">
       <div class="sidebar-header">
         <h3 class="sidebar-title">
@@ -205,52 +205,18 @@
       </div>
 
       <div class="sidebar-scroll" id="sidebar-scroll">
-        <!-- TODAS -->
+        <!-- TODOS -->
         <button class="sidebar-item sidebar-item-active" data-categoria="todos">
           <span class="sidebar-icon"><i class="fas fa-border-all"></i></span>
           <span class="sidebar-label">Todos os Produtos</span>
           <span class="sidebar-count" id="count-todos">0</span>
         </button>
 
-        <!-- BOTÃO DIRETO: SPRAY 120ML -->
-        <button class="sidebar-item sidebar-item-category" data-categoria="spray 120ml">
-          <span class="sidebar-icon" style="background: linear-gradient(135deg, #ede9fe, #c4b5fd);">
-            <i class="fa-solid fa-spray-can" style="color: #6d28d9;"></i>
-          </span>
-          <span class="sidebar-label">Spray 120ml</span>
-          <span class="sidebar-count" id="count-spray-120ml">0</span>
-        </button>
-
-        <!-- BOTÃO DIRETO: SPRAY 500ML -->
-        <button class="sidebar-item sidebar-item-category" data-categoria="spray 500ml">
-          <span class="sidebar-icon" style="background: linear-gradient(135deg, #fef3c7, #fcd34d);">
-            <i class="fa-solid fa-bottle-water" style="color: #92400e;"></i>
-          </span>
-          <span class="sidebar-label">Spray 500ml</span>
-          <span class="sidebar-count" id="count-spray-500ml">0</span>
-        </button>
-
-        <!-- BOTÃO DIRETO: REFIL 1L -->
-        <button class="sidebar-item sidebar-item-category" data-categoria="refil">
-          <span class="sidebar-icon" style="background: linear-gradient(135deg, #dbeafe, #93c5fd);">
-            <i class="fa-solid fa-fill-drip" style="color: #1e40af;"></i>
-          </span>
-          <span class="sidebar-label">Refil 1 Litro</span>
-          <span class="sidebar-count" id="count-refil">0</span>
-        </button>
-
-        <!-- BOTÃO DIRETO: LINHA AUTOMOTIVA -->
-        <button class="sidebar-item sidebar-item-category" data-categoria="automotivo">
-          <span class="sidebar-icon" style="background: linear-gradient(135deg, #fce7f3, #f9a8d4);">
-            <i class="fa-solid fa-car-side" style="color: #9d174d;"></i>
-          </span>
-          <span class="sidebar-label">Linha Automotiva</span>
-          <span class="sidebar-count" id="count-automotivo">0</span>
-        </button>
-
+        <!-- 🆕 Categorias e Famílias dinâmicas -->
+        <div id="sidebar-categorias-dinamicas"></div>
       </div>
     </aside>
-
+    
     <!-- OVERLAY MOBILE -->
     <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
